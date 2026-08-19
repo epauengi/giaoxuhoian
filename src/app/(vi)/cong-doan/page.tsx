@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { SectionHeader } from "@/components/ui/section-header";
 import { Ornament } from "@/components/ui/ornament";
 import { Badge } from "@/components/ui/badge";

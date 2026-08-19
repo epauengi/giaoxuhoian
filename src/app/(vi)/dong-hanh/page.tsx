@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { SectionHeader } from "@/components/ui/section-header";
 import { Ornament } from "@/components/ui/ornament";
-import { Badge } from "@/components/ui/badge";
 import {
   CHUONG_TRINH_DONG_GOP,
   HINH_THUC_DONG_GOP,

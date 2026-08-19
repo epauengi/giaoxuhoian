@@ -2,8 +2,12 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { SectionHeader } from "@/components/ui/section-header";
 import { ArticleCard } from "@/components/blocks/article-card";
-import { getBaiViet, CATEGORY_LABELS } from "@/lib/content";
+import { getPublishedArticles } from "@/lib/articles";
+import { CATEGORY_LABELS } from "@/lib/article-types";
 import { cn } from "@/lib/utils";
+
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Tin tức & Sự kiện",
@@ -19,9 +23,8 @@ export default async function TinTucPage({
   searchParams: Promise<{ loai?: string }>;
 }) {
   const { loai } = await searchParams;
-  const all = getBaiViet();
   const active = loai && FILTERS.includes(loai) ? loai : null;
-  const filtered = active ? all.filter((b) => b.category === active) : all;
+  const filtered = await getPublishedArticles("bai-viet", active ?? undefined);
 
   return (
     <>

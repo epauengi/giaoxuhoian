@@ -3,11 +3,11 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import { Badge } from "@/components/ui/badge";
-import { getSuyNiem, getSuyNiemBySlug, formatDate } from "@/lib/content";
+import { getPublishedArticleBySlug } from "@/lib/articles";
+import { formatDate } from "@/lib/article-types";
 
-export function generateStaticParams() {
-  return getSuyNiem().map((b) => ({ slug: b.slug }));
-}
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
 
 export async function generateMetadata({
   params,
@@ -15,14 +15,14 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const bai = getSuyNiemBySlug(slug);
+  const bai = await getPublishedArticleBySlug("suy-niem", slug);
   if (!bai) return {};
   return { title: bai.title, description: bai.summary };
 }
 
 export default async function SuyNiemPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const bai = getSuyNiemBySlug(slug);
+  const bai = await getPublishedArticleBySlug("suy-niem", slug);
   if (!bai) notFound();
 
   return (
@@ -51,7 +51,10 @@ export default async function SuyNiemPage({ params }: { params: Promise<{ slug: 
       <div className="border-b border-ink">
         <div className="mx-auto max-w-screen-xl px-4 py-12">
           <div className="prose-newsprint max-w-3xl text-justify">
-            <MDXRemote source={bai.content} />
+            <MDXRemote
+                source={bai.content}
+                options={{ blockJS: true, blockDangerousJS: true, mdxOptions: { format: "md" } }}
+              />
           </div>
         </div>
       </div>

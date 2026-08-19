@@ -4,11 +4,11 @@ import { notFound } from "next/navigation";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import { Badge } from "@/components/ui/badge";
 import { Halftone } from "@/components/blocks/article-card";
-import { getBaiViet, getBaiVietBySlug, CATEGORY_LABELS, formatDate } from "@/lib/content";
+import { getPublishedArticleBySlug } from "@/lib/articles";
+import { CATEGORY_LABELS, formatDate } from "@/lib/article-types";
 
-export function generateStaticParams() {
-  return getBaiViet().map((b) => ({ slug: b.slug }));
-}
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
 
 export async function generateMetadata({
   params,
@@ -16,14 +16,14 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const bai = getBaiVietBySlug(slug);
+  const bai = await getPublishedArticleBySlug("bai-viet", slug);
   if (!bai) return {};
   return { title: bai.title, description: bai.summary };
 }
 
 export default async function BaiVietPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const bai = getBaiVietBySlug(slug);
+  const bai = await getPublishedArticleBySlug("bai-viet", slug);
   if (!bai) notFound();
 
   return (
@@ -58,7 +58,10 @@ export default async function BaiVietPage({ params }: { params: Promise<{ slug: 
             <div className="lg:col-span-8">
               <Halftone className="mb-2 h-56 sm:h-72" caption="Fig. 1.1 — Ảnh: Ban Truyền thông" />
               <div className="prose-newsprint mt-8 max-w-3xl text-justify">
-                <MDXRemote source={bai.content} />
+                <MDXRemote
+                  source={bai.content}
+                  options={{ blockJS: true, blockDangerousJS: true, mdxOptions: { format: "md" } }}
+                />
               </div>
             </div>
             <aside className="lg:col-span-4">

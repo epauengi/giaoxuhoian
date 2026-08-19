@@ -6,11 +6,15 @@ import { Ornament } from "@/components/ui/ornament";
 import { ButtonLink } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ArticleCard, Halftone } from "@/components/blocks/article-card";
-import { getBaiViet, getSuyNiem, formatDate } from "@/lib/content";
+import { getPublishedArticles } from "@/lib/articles";
+import { formatDate } from "@/lib/article-types";
 import { GIO_LE_THUONG_KY, NGAY_CAP_NHAT_GIO_LE } from "@/lib/data/gio-le";
 import { thongBaoHieuLuc } from "@/lib/data/thong-bao";
 import { phungVuHomNay } from "@/lib/data/phung-vu";
 import { formatVi } from "@/lib/utils";
+
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
 
 const QUICK_LINKS = [
   { href: "/phung-vu", label: "Giờ lễ", icon: Clock },
@@ -21,11 +25,11 @@ const QUICK_LINKS = [
   { href: "/dong-hanh", label: "Đóng góp", icon: HeartHandshake },
 ];
 
-export default function HomePage() {
+export default async function HomePage() {
   const homNay = new Date();
-  const baiViet = getBaiViet();
+  const baiViet = await getPublishedArticles("bai-viet");
   const [tinTieuDiem, ...tinMoi] = baiViet.slice(0, 4);
-  const suyNiemMoi = getSuyNiem().slice(0, 2);
+  const suyNiemMoi = (await getPublishedArticles("suy-niem")).slice(0, 2);
   const thongBao = thongBaoHieuLuc(homNay);
   const phungVu = phungVuHomNay(homNay);
 

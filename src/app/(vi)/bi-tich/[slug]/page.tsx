@@ -4,6 +4,26 @@ import { notFound } from "next/navigation";
 import { ButtonLink } from "@/components/ui/button";
 import { BI_TICH } from "@/lib/data/bi-tich";
 
+function DetailBlock({ title, items }: { title: string; items: string[] }) {
+  if (items.length === 0) return null;
+
+  return (
+    <div className="border border-ink p-6">
+      <h2 className="mb-3 border-b-2 border-ink pb-2 font-sans text-xs font-bold uppercase tracking-widest">
+        {title}
+      </h2>
+      <ul className="space-y-2">
+        {items.map((item) => (
+          <li key={item} className="flex gap-2 font-body text-sm leading-relaxed">
+            <span aria-hidden className="mt-1.5 block h-1.5 w-1.5 shrink-0 bg-ink" />
+            {item}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
 export function generateStaticParams() {
   return BI_TICH.map((bt) => ({ slug: bt.slug }));
 }
@@ -28,23 +48,6 @@ export default async function BiTichDetailPage({
   const bt = BI_TICH.find((b) => b.slug === slug);
   if (!bt) notFound();
   const index = BI_TICH.indexOf(bt);
-
-  const Block = ({ title, items }: { title: string; items: string[] }) =>
-    items.length > 0 ? (
-      <div className="border border-ink p-6">
-        <h2 className="mb-3 border-b-2 border-ink pb-2 font-sans text-xs font-bold uppercase tracking-widest">
-          {title}
-        </h2>
-        <ul className="space-y-2">
-          {items.map((item) => (
-            <li key={item} className="flex gap-2 font-body text-sm leading-relaxed">
-              <span aria-hidden className="mt-1.5 block h-1.5 w-1.5 shrink-0 bg-ink" />
-              {item}
-            </li>
-          ))}
-        </ul>
-      </div>
-    ) : null;
 
   return (
     <>
@@ -71,8 +74,8 @@ export default async function BiTichDetailPage({
         <div className="mx-auto max-w-screen-xl px-4 py-12">
           <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
             <div className="space-y-6 lg:col-span-8">
-              <Block title="Điều kiện" items={bt.dieuKien} />
-              <Block title="Hồ sơ cần chuẩn bị" items={bt.hoSo} />
+              <DetailBlock title="Điều kiện" items={bt.dieuKien} />
+              <DetailBlock title="Hồ sơ cần chuẩn bị" items={bt.hoSo} />
               <div className="border border-ink p-6">
                 <h2 className="mb-3 border-b-2 border-ink pb-2 font-sans text-xs font-bold uppercase tracking-widest">
                   Quy trình
