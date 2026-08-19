@@ -28,6 +28,7 @@ export const CATEGORY_LABELS: Record<string, string> = {
 
 export interface BaiViet {
   id?: string;
+  locale: "vi"
   kind: ArticleKind;
   status: ArticleStatus;
   title: string;
@@ -52,7 +53,7 @@ export const PUBLIC_ARTICLE_KINDS = {
   "suy-niem": "/loi-chua",
 } as const satisfies Record<ArticleKind, string>;
 
-export function formatDate(iso: string): string {
-  const [y, m, d] = iso.split("-");
-  return `${d}.${m}.${y}`;
+export function formatDate(iso: string, _locale?: "vi"): string {
+  const date = new Date(`${iso}T00:00:00Z`);
+  return new Intl.DateTimeFormat("vi-VN", { day: "2-digit", month: "2-digit", year: "numeric", timeZone: "UTC" }).format(date);
 }

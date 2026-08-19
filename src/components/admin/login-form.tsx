@@ -3,7 +3,7 @@
 import { useActionState } from "react";
 import { Input, Field } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { loginAction, type LoginState } from "@/app/(vi)/admin/dang-nhap/actions";
+import { loginAction, type LoginState } from "@/app/admin/dang-nhap/actions";
 
 const initialState: LoginState = {};
 

@@ -4,7 +4,7 @@ import { useActionState } from "react";
 import { Field, Input, Select, Textarea } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import type { BaiViet } from "@/lib/article-types";
-import type { ArticleActionState } from "@/app/(vi)/admin/bai-viet/actions";
+import type { ArticleActionState } from "@/app/admin/bai-viet/actions";
 
 const initialState: ArticleActionState = {};
 

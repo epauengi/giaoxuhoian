@@ -1,6 +1,6 @@
 "use client";
 
-import { deleteArticle } from "@/app/(vi)/admin/bai-viet/actions";
+import { deleteArticle } from "@/app/admin/bai-viet/actions";
 import { Button } from "@/components/ui/button";
 
 export function DeleteArticleForm({ id, title }: { id: string; title: string }) {

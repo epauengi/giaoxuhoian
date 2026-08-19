@@ -20,7 +20,7 @@ export const GIO_LE_THUONG_KY: GioLe[] = [
   {
     ngay: "Chúa nhật",
     gio: ["05:30", "09:00", "16:00", "18:30"],
-    ghiChu: "Lễ 16:00 bằng tiếng Anh (English Mass)",
+    ghiChu: "Thánh lễ 16:00 bằng tiếng Anh",
   },
 ];
 

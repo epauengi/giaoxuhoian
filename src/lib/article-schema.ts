@@ -22,6 +22,7 @@ const tags = z
 
 export const articleInputSchema = z
   .object({
+    locale: z.literal("vi").default("vi"),
     kind: z.enum(ARTICLE_KINDS),
     status: z.enum(ARTICLE_STATUSES),
     title: z.string().trim().min(1).max(200),
@@ -55,6 +56,7 @@ export const updatedAtSchema = z.string().datetime({ offset: true });
 
 export function formDataToArticleInput(formData: FormData): unknown {
   return {
+    locale: "vi",
     kind: formData.get("kind"),
     status: formData.get("status"),
     title: formData.get("title"),
