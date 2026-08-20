@@ -10,9 +10,9 @@ export function Masthead() {
     <>
       <header className="hidden sm:block">
         <div className="border-b border-ink bg-paper">
-          <div className="mx-auto grid max-w-screen-xl grid-cols-1 items-center px-4 py-1.5 font-mono text-[11px] uppercase tracking-widest text-neutral-600 sm:grid-cols-2">
+          <div className="relative mx-auto max-w-screen-xl px-4 py-1.5 font-mono text-[11px] uppercase tracking-widest text-neutral-600">
             <span>{today}</span>
-            <span className="hidden text-center sm:inline">{dict.masthead.diocese}</span>
+            <span className="hidden text-center sm:absolute sm:inset-x-0 sm:inline">{dict.masthead.diocese}</span>
           </div>
         </div>
         <div className="newsprint-texture border-b-4 border-ink">

@@ -14,7 +14,7 @@
   --color-neutral-700: #404040;
 
   --font-serif: var(--font-playfair);
-  --font-body: var(--font-lora);
+  --font-body: var(--font-source-serif);
   --font-sans: var(--font-inter);
   --font-mono: var(--font-jetbrains);
 
