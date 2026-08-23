@@ -5,7 +5,8 @@ import { SectionHeader } from "@/components/ui/section-header";
 import { Ornament } from "@/components/ui/ornament";
 import { ButtonLink } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { ArticleCard, Halftone } from "@/components/blocks/article-card";
+import { ArticleCard } from "@/components/blocks/article-card";
+import { EditorialPlate } from "@/components/ui/editorial-plate";
 import { getPublishedArticles } from "@/lib/articles";
 import { formatDate } from "@/lib/article-types";
 import { GIO_LE_THUONG_KY, NGAY_CAP_NHAT_GIO_LE } from "@/lib/data/gio-le";
@@ -58,13 +59,14 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
             <p className="mb-3 font-mono text-xs uppercase tracking-widest text-neutral-500">
               {formatDateLocale(homNay)} · {phungVu.mauPhungVu === "Xanh" ? "Mùa Thường niên" : phungVu.mauPhungVu}
             </p>
-            <h2 className="font-serif text-5xl font-black leading-[0.95] tracking-tighter text-ink sm:text-6xl lg:text-8xl">
+            <h1 className="font-serif text-5xl font-black leading-[0.95] tracking-tighter text-ink sm:text-6xl lg:text-8xl">
               {p.heroLead}
               <br />
               {p.heroMiddle}
               <br />
               <span className="italic font-bold">{p.heroEmphasis}</span>
-            </h2>
+            </h1>
+            <div aria-hidden className="hero-rule mt-5 h-1 w-32 bg-accent" />
             <p className="drop-cap mt-6 max-w-2xl font-body text-base leading-relaxed text-neutral-600 sm:text-lg">
               {p.heroDescription}
             </p>
@@ -82,7 +84,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
               <h3 className="font-sans text-xs font-bold uppercase tracking-widest">
                 {p.quickMass}
               </h3>
-              <span className="font-mono text-[10px] uppercase tracking-widest text-neutral-500">
+              <span className="font-mono text-xs uppercase tracking-widest text-neutral-500">
                 {p.updated} {NGAY_CAP_NHAT_GIO_LE}
               </span>
             </div>
@@ -172,7 +174,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
             {tinTieuDiem && (
               <div className="lg:col-span-7">
                 <ArticleCard locale={locale} bai={tinTieuDiem} href={path(`/tin-tuc/${tinTieuDiem.slug}`)} featured />
-                <Halftone locale={locale} className="mt-4 h-48" caption={p.newsCaption} />
+                <EditorialPlate title={tinTieuDiem.title} label="Bản tin giáo xứ" marker={new Date(tinTieuDiem.date).getFullYear().toString()} caption={p.newsCaption} className="mt-4 h-56" />
               </div>
             )}
             <div className="space-y-6 lg:col-span-5">
@@ -222,19 +224,19 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
           <SectionHeader label={p.reflectionLabel} title={p.reflectionTitle} />
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
             {suyNiemMoi.map((bai) => (
-              <article key={bai.slug} className="hard-shadow-hover border border-ink bg-paper p-6">
-                <Link href={path(`/loi-chua/${bai.slug}`)} className="block">
+              <article key={bai.slug} className="hard-shadow-hover group border border-ink bg-paper">
+                <Link href={path(`/loi-chua/${bai.slug}`)} className="block p-6">
                   <div className="mb-2 flex items-center gap-2">
                     <Badge>{bai.category === "suy-niem-chua-nhat" ? p.sunday : p.daily}</Badge>
-                    <span className="font-mono text-[11px] uppercase tracking-widest text-neutral-500">
+                    <span className="font-mono text-xs uppercase tracking-widest text-neutral-500">
                       {formatDate(bai.date)}
                     </span>
                   </div>
-                  <h3 className="font-serif text-2xl font-bold">{bai.title}</h3>
+                  <h3 className="font-serif text-2xl font-bold group-hover:underline group-focus-within:underline group-hover:decoration-accent group-focus-within:decoration-accent group-hover:decoration-2 group-focus-within:decoration-2 group-hover:underline-offset-4 group-focus-within:underline-offset-4">{bai.title}</h3>
                   <p className="mt-2 font-body text-sm leading-relaxed text-neutral-600">
                     {bai.summary}
                   </p>
-                  <p className="mt-3 font-mono text-[11px] uppercase tracking-widest text-neutral-500">
+                  <p className="mt-3 font-mono text-xs uppercase tracking-widest text-neutral-500">
                     {bai.author}
                   </p>
                 </Link>

@@ -3,7 +3,6 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import { Badge } from "@/components/ui/badge";
-import { Halftone } from "@/components/blocks/article-card";
 import { getPublishedArticleBySlug } from "@/lib/articles";
 import { formatDate } from "@/lib/article-types";
 import { localePath } from "@/lib/i18n/routing";
@@ -63,8 +62,7 @@ export default async function BaiVietPage({ params }: { params: Promise<{ locale
         <div className="mx-auto max-w-screen-xl px-4 py-12">
           <div className="grid grid-cols-1 gap-8 lg:grid-cols-12">
             <div className="lg:col-span-8">
-              <Halftone locale={locale} className="mb-2 h-56 sm:h-72" caption="Hình 1.1 — Ảnh: Ban Truyền thông" />
-              <div className="prose-newsprint mt-8 max-w-3xl text-justify">
+              <div className="prose-newsprint max-w-3xl">
                 <MDXRemote
                   source={bai.content}
                   options={{ blockJS: true, blockDangerousJS: true, mdxOptions: { format: "md" } }}

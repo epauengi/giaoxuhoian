@@ -30,15 +30,15 @@ function ReflectionList({ items, locale }: { items: BaiViet[]; locale: "vi" }) {
         <Link
           key={bai.slug}
           href={localePath(locale, `/loi-chua/${bai.slug}`)}
-          className="hard-shadow-hover block border border-ink bg-paper p-5"
+          className="hard-shadow-hover group block border border-ink bg-paper p-5"
         >
           <div className="mb-2 flex items-center gap-2">
             <Badge>{formatDate(bai.date, locale)}</Badge>
-            <span className="font-mono text-[11px] uppercase tracking-widest text-neutral-500">
+            <span className="font-mono text-xs uppercase tracking-widest text-neutral-500">
               {bai.author}
             </span>
           </div>
-          <h3 className="font-serif text-2xl font-bold">{bai.title}</h3>
+          <h3 className="font-serif text-2xl font-bold group-hover:underline group-focus-visible:underline group-hover:decoration-accent group-focus-visible:decoration-accent group-hover:decoration-2 group-focus-visible:decoration-2 group-hover:underline-offset-4 group-focus-visible:underline-offset-4">{bai.title}</h3>
           <p className="mt-1 font-body text-sm leading-relaxed text-neutral-600">{bai.summary}</p>
         </Link>
       ))}
@@ -125,7 +125,7 @@ export default async function LoiChuaPage({ params }: { params: Promise<{ locale
             {KINH_NGUYEN.map((k) => (
               <div key={k.ten} className="border-b border-r border-ink p-4">
                 <p className="font-serif text-lg font-bold">{k.ten}</p>
-                <p className="mt-1 font-mono text-[11px] uppercase tracking-widest text-neutral-500">
+                <p className="mt-1 font-mono text-xs uppercase tracking-widest text-neutral-500">
                   {k.loai}
                 </p>
               </div>

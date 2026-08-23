@@ -39,7 +39,12 @@ const vi = {
     description: "Cổng thông tin chính thức của Giáo xứ Hội An, Giáo phận Đà Nẵng — giờ lễ, Bí tích, tin tức và sinh hoạt cộng đoàn.",
   },
   quick: { label: "Truy cập nhanh", mass: "Giờ lễ", emergency: "Khẩn cấp", support: "Đóng góp", directions: "Chỉ đường" },
-  ticker: "Thông báo",
+  ticker: {
+    label: "Thông báo",
+    region: "Thông báo mới",
+    pause: "Tạm dừng thông báo",
+    resume: "Tiếp tục thông báo",
+  },
   article: {
     image: "Ảnh minh họa",
     tags: "Thẻ",

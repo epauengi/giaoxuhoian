@@ -31,7 +31,7 @@ export default async function PhungVuPage({ params }: { params: Promise<{ locale
     <>
       <section className="newsprint-texture border-b border-ink">
         <div className="mx-auto max-w-screen-xl px-4 py-12 sm:py-16">
-          <SectionHeader label={p.label} title={p.title} />
+          <SectionHeader label={p.label} title={p.title} as="h1" />
           <p className="max-w-2xl font-body text-base leading-relaxed text-neutral-600">
             Giờ lễ được xác nhận hằng tuần. Nếu có thay đổi đột xuất, giáo xứ sẽ thông báo trên
             trang chủ và tại nhà thờ.
@@ -52,7 +52,7 @@ export default async function PhungVuPage({ params }: { params: Promise<{ locale
                 <tr className="border-b-2 border-ink bg-ink text-paper">
                   <th className="px-4 py-3 font-sans text-xs font-bold uppercase tracking-widest">{p.day}</th>
                   <th className="px-4 py-3 font-sans text-xs font-bold uppercase tracking-widest">{p.mass}</th>
-                  <th className="hidden px-4 py-3 font-sans text-xs font-bold uppercase tracking-widest sm:table-cell">
+                  <th className="px-4 py-3 font-sans text-xs font-bold uppercase tracking-widest">
                     {p.note}
                   </th>
                 </tr>
@@ -64,7 +64,7 @@ export default async function PhungVuPage({ params }: { params: Promise<{ locale
                       {g.ngay}
                     </td>
                     <td className="px-4 py-4 font-mono text-xl font-medium">{g.gio.join(" · ")}</td>
-                    <td className="hidden px-4 py-4 font-body text-sm italic text-neutral-600 sm:table-cell">
+                    <td className="px-4 py-4 font-body text-sm italic text-neutral-600">
                       {g.ghiChu}
                     </td>
                   </tr>
@@ -72,7 +72,7 @@ export default async function PhungVuPage({ params }: { params: Promise<{ locale
               </tbody>
             </table>
           </div>
-          <p className="mt-3 font-mono text-[11px] uppercase tracking-widest text-neutral-500">
+          <p className="mt-3 font-mono text-xs uppercase tracking-widest text-neutral-500">
             {p.template}
           </p>
         </div>
@@ -105,7 +105,7 @@ export default async function PhungVuPage({ params }: { params: Promise<{ locale
                 <div key={m.muc} className="border border-ink p-4">
                   <p className="font-sans text-xs font-bold uppercase tracking-widest">{m.muc}</p>
                   <p className="mt-1 font-body text-sm leading-relaxed">{m.thoiGian}</p>
-                  <p className="font-mono text-[11px] uppercase tracking-widest text-neutral-500">
+                  <p className="font-mono text-xs uppercase tracking-widest text-neutral-500">
                     {m.diaDiem}
                   </p>
                 </div>

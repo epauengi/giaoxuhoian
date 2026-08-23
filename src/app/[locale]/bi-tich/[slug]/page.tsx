@@ -120,7 +120,7 @@ export default async function BiTichDetailPage({
                   {p.sendQuestion}
                 </ButtonLink>
               </div>
-              <p className="font-mono text-[11px] uppercase tracking-widest text-neutral-500">
+              <p className="font-mono text-xs uppercase tracking-widest text-neutral-500">
                 * {p.template}
               </p>
             </aside>
@@ -136,7 +136,7 @@ export default async function BiTichDetailPage({
               href={path(`/bi-tich/${BI_TICH[index - 1].slug}`)}
               className="border-b border-ink p-6 hover:bg-neutral-100 sm:border-b-0 sm:border-r"
             >
-              <p className="font-mono text-[11px] uppercase tracking-widest text-neutral-500">{p.previous}</p>
+              <p className="font-mono text-xs uppercase tracking-widest text-neutral-500">{p.previous}</p>
               <p className="mt-1 font-serif text-xl font-bold">{BI_TICH[index - 1].ten}</p>
             </Link>
           )}
@@ -145,7 +145,7 @@ export default async function BiTichDetailPage({
               href={path(`/bi-tich/${BI_TICH[index + 1].slug}`)}
               className="p-6 text-right hover:bg-neutral-100"
             >
-              <p className="font-mono text-[11px] uppercase tracking-widest text-neutral-500">{p.next}</p>
+              <p className="font-mono text-xs uppercase tracking-widest text-neutral-500">{p.next}</p>
               <p className="mt-1 font-serif text-xl font-bold">{BI_TICH[index + 1].ten}</p>
             </Link>
           )}

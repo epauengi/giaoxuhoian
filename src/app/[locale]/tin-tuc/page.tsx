@@ -30,6 +30,7 @@ export default async function TinTucPage({
   params: Promise<{ locale: string }>;
 }) {
   const locale = "vi" as const;
+  await params;
   const { loai } = await searchParams;
   const active = loai && FILTERS.includes(loai) ? loai : null;
   const filtered = await getPublishedArticles(locale, "bai-viet", active ?? undefined);
@@ -41,7 +42,7 @@ export default async function TinTucPage({
     <>
       <section className="newsprint-texture border-b border-ink">
         <div className="mx-auto max-w-screen-xl px-4 py-12 sm:py-16">
-          <SectionHeader label={page.label} title={page.title} />
+          <SectionHeader label={page.label} title={page.title} as="h1" />
           <p className="max-w-2xl font-body text-base leading-relaxed text-neutral-600">
             {page.description} Suy niệm Lời Chúa tại
             <Link href={path("/loi-chua")} className="underline decoration-accent decoration-2 underline-offset-4">{page.wordLink}</Link>.

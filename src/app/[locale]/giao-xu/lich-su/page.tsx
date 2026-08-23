@@ -1,7 +1,7 @@
 import { SectionHeader } from "@/components/ui/section-header";
 import { getDictionary } from "@/lib/i18n/dictionaries";
 import { Ornament } from "@/components/ui/ornament";
-import { Halftone } from "@/components/blocks/article-card";
+import { EditorialPlate } from "@/components/ui/editorial-plate";
 import { DONG_THOI_GIAN } from "@/lib/data/giao-xu";
 import { localizedPageMetadata } from "@/lib/seo";
 
@@ -22,28 +22,28 @@ export default async function LichSuPage({ params }: { params: Promise<{ locale:
     <>
       <section className="newsprint-texture border-b border-ink">
         <div className="mx-auto max-w-screen-xl px-4 py-12 sm:py-16">
-          <SectionHeader label={p.label} title={p.title} />
+          <SectionHeader label={p.label} title={p.title} as="h1" />
           <div className="grid grid-cols-1 gap-8 lg:grid-cols-12">
             <div className="lg:col-span-7">
-              <p className="drop-cap font-body text-base leading-relaxed text-justify text-neutral-600">
+              <p className="drop-cap font-body text-base leading-relaxed text-neutral-600">
                 Hội An — thương cảng quốc tế sầm uất bậc nhất Đàng Trong trong các thế kỷ
                 XVI–XVIII — là nơi gặp gỡ của thương nhân Nhật Bản, Trung Hoa, Bồ Đào Nha, Hà
                 Lan và cũng là một trong những điểm đến sớm nhất của các thừa sai phương Tây.
                 Hạt giống Tin Mừng được gieo trên vùng đất này từ đầu thế kỷ XVII, và cộng đoàn
                 tín hữu Hội An đã bền bỉ lớn lên qua bao biến cố của lịch sử.
               </p>
-              <p className="mt-4 font-body text-base leading-relaxed text-justify text-neutral-600">
+              <p className="mt-4 font-body text-base leading-relaxed text-neutral-600">
                 Gần Hội An, Dinh trấn Thanh Chiêm được các nhà nghiên cứu xem là cái nôi của
                 chữ Quốc ngữ — nơi cha Francisco de Pina và các thừa sai Dòng Tên khởi sự dùng
                 mẫu tự Latinh để ghi âm tiếng Việt. Đức tin và văn hóa đã gặp nhau trên vùng
                 đất này theo cách rất riêng.
               </p>
-              <p className="mt-4 font-mono text-[11px] uppercase tracking-widest text-neutral-500">
+              <p className="mt-4 font-mono text-xs uppercase tracking-widest text-neutral-500">
                 {p.template}
               </p>
             </div>
             <div className="lg:col-span-5">
-              <Halftone locale={locale} className="h-72" caption={p.caption1} />
+              <EditorialPlate title="Hạt giống Tin Mừng" label="Hội An · Đàng Trong" marker="1615" logo caption={p.caption1} className="h-80" />
             </div>
           </div>
         </div>
@@ -83,7 +83,7 @@ export default async function LichSuPage({ params }: { params: Promise<{ locale:
             </p>
           </div>
           <div className="lg:col-span-7">
-            <Halftone locale={locale} className="h-64" caption={p.caption2} />
+            <EditorialPlate title={p.heritageTitle} label={p.heritage} marker="1999" caption={p.caption2} className="h-72" />
           </div>
         </div>
       </section>

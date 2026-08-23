@@ -1,7 +1,7 @@
 import { cn } from "@/lib/utils";
 
 const fieldClasses =
-  "w-full border-b-2 border-ink bg-transparent px-3 py-2 font-mono text-sm focus-visible:bg-[#F0F0F0] focus-visible:outline-none";
+  "w-full border-b-2 border-ink bg-transparent px-3 py-2 font-mono text-sm transition-colors duration-200 focus-visible:bg-neutral-100 disabled:bg-muted";
 
 export function Field({
   label,

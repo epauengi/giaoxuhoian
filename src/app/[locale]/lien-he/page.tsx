@@ -25,6 +25,7 @@ export default async function LienHePage({
 }) {
   const locale = "vi" as const;
   const p = getDictionary(locale).page.contact;
+  await params;
   const sp = await searchParams;
   const defaultChuDe = sp["khan-cap"] ? "khan-cap" : sp["chu-de"];
 
@@ -32,7 +33,7 @@ export default async function LienHePage({
     <>
       <section className="newsprint-texture border-b border-ink">
         <div className="mx-auto max-w-screen-xl px-4 py-12 sm:py-16">
-          <SectionHeader label={p.label} title={p.title} />
+          <SectionHeader label={p.label} title={p.title} as="h1" />
           {sp["khan-cap"] && (
             <div className="mb-6 max-w-2xl border-2 border-accent bg-paper p-4">
               <p className="font-sans text-xs font-bold uppercase tracking-widest text-accent">
@@ -58,7 +59,7 @@ export default async function LienHePage({
                 { icon: Mail, label: p.email, value: GIAO_XU.email },
               ].map(({ icon: Icon, label, value }) => (
                 <li key={label} className="flex gap-3 border-b border-muted pb-3">
-                  <span className="flex h-12 w-12 shrink-0 items-center justify-center border border-ink transition-colors duration-200 hover:bg-ink hover:text-paper">
+                  <span className="flex h-12 w-12 shrink-0 items-center justify-center border border-ink">
                     <Icon className="h-6 w-6" strokeWidth={1.5} />
                   </span>
                   <div>
@@ -85,7 +86,7 @@ export default async function LienHePage({
                 </div>
               </li>
             </ul>
-            <p className="mt-4 font-mono text-[11px] uppercase tracking-widest text-neutral-500">
+            <p className="mt-4 font-mono text-xs uppercase tracking-widest text-neutral-500">
               {p.template}
             </p>
           </div>
@@ -103,7 +104,7 @@ export default async function LienHePage({
                 referrerPolicy="no-referrer-when-downgrade"
               />
             </div>
-            <p className="mt-2 font-mono text-[11px] uppercase tracking-widest text-neutral-500">
+            <p className="mt-2 font-mono text-xs uppercase tracking-widest text-neutral-500">
               {p.mapCaption}
             </p>
           </div>

@@ -24,7 +24,7 @@ export default async function BiTichPage({ params }: { params: Promise<{ locale:
     <>
       <section className="newsprint-texture border-b border-ink">
         <div className="mx-auto max-w-screen-xl px-4 py-12 sm:py-16">
-          <SectionHeader label="Phụng vụ & Bí tích" title="Bảy Bí tích" />
+          <SectionHeader label="Phụng vụ & Bí tích" title="Bảy Bí tích" as="h1" />
           <p className="drop-cap max-w-3xl font-body text-base leading-relaxed text-neutral-600">
             Bảy Bí tích là những dấu chỉ hữu hiệu của ân sủng, được Chúa Kitô thiết lập và trao
             cho Hội Thánh. Tại giáo xứ Hội An, mỗi Bí tích có hướng dẫn riêng về điều kiện, hồ
@@ -46,7 +46,7 @@ export default async function BiTichPage({ params }: { params: Promise<{ locale:
                 <p className="font-mono text-xs uppercase tracking-widest text-neutral-500">
                   {String(i + 1).padStart(2, "0")} · {bt.tenLatinh}
                 </p>
-                <h2 className="mt-2 font-serif text-3xl font-bold group-hover:underline group-hover:decoration-accent group-hover:decoration-2 group-hover:underline-offset-4">
+                <h2 className="mt-2 font-serif text-3xl font-bold group-hover:underline group-focus-visible:underline group-hover:decoration-accent group-focus-visible:decoration-accent group-hover:decoration-2 group-focus-visible:decoration-2 group-hover:underline-offset-4 group-focus-visible:underline-offset-4">
                   {bt.ten}
                 </h2>
                 <p className="mt-2 font-body text-sm leading-relaxed text-neutral-600">
@@ -85,7 +85,7 @@ export default async function BiTichPage({ params }: { params: Promise<{ locale:
                 <br />
                 Email: giaoxuhoian0706@gmail.com
               </p>
-              <p className="mt-3 font-mono text-[11px] uppercase tracking-widest text-neutral-500">
+              <p className="mt-3 font-mono text-xs uppercase tracking-widest text-neutral-500">
                 {p.template}
               </p>
             </div>

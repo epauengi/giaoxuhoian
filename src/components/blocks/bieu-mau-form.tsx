@@ -6,7 +6,7 @@ import { Field, Input, Select, Textarea } from "@/components/ui/input";
 import type { Locale } from "@/lib/i18n/config";
 import { getDictionary } from "@/lib/i18n/dictionaries";
 
-export function BieuMauForm({ defaultChuDe, locale: _locale = "vi" }: { defaultChuDe?: string; locale?: Locale }) {
+export function BieuMauForm({ defaultChuDe }: { defaultChuDe?: string; locale?: Locale }) {
   const d = getDictionary().form;
   const [status, setStatus] = useState<"idle" | "sending" | "ok" | "error">("idle");
   const [error, setError] = useState("");
@@ -25,7 +25,7 @@ export function BieuMauForm({ defaultChuDe, locale: _locale = "vi" }: { defaultC
     <div className="grid grid-cols-1 gap-5 sm:grid-cols-2"><Field label={d.name} required><Input name="hoTen" required autoComplete="name" /></Field><Field label={d.contact}><Input name="lienHe" autoComplete="email" /></Field></div>
     <Field label={d.topic} required><Select name="chuDe" required defaultValue={defaultChuDe ?? ""}><option value="" disabled>{d.choose}</option>{d.topics.map(([value, label]) => <option key={value} value={value}>{label}</option>)}</Select></Field>
     <Field label={d.content} required><Textarea name="noiDung" required maxLength={5000} /></Field>
-    <label className="flex items-start gap-2 font-body text-sm text-neutral-600"><input type="checkbox" name="riengTu" value="1" className="mt-1 h-4 w-4 accent-[#111111]" />{d.privacy}</label>
+    <label className="flex items-start gap-2 font-body text-sm text-neutral-600"><input type="checkbox" name="riengTu" value="1" className="mt-1 h-5 w-5 shrink-0 accent-ink" />{d.privacy}</label>
     {status === "error" && <p role="alert" className="border border-accent bg-paper p-3 font-body text-sm text-accent">{error}</p>}
     <Button type="submit" disabled={status === "sending"} className="w-full sm:w-auto">{status === "sending" ? d.sending : d.send}</Button>
   </form>;

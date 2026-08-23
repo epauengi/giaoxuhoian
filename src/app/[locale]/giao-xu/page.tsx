@@ -1,7 +1,7 @@
 import { SectionHeader } from "@/components/ui/section-header";
 import { Ornament } from "@/components/ui/ornament";
 import { ButtonLink } from "@/components/ui/button";
-import { Halftone } from "@/components/blocks/article-card";
+import { EditorialPlate } from "@/components/ui/editorial-plate";
 import { GIAO_XU, CHA_XU, HOI_DONG_MUC_VU, GIAO_KHU } from "@/lib/data/giao-xu";
 import { localePath } from "@/lib/i18n/routing";
 import { getDictionary } from "@/lib/i18n/dictionaries";
@@ -26,7 +26,7 @@ export default async function GiaoXuPage({ params }: { params: Promise<{ locale:
       <section className="newsprint-texture border-b border-ink">
         <div className="mx-auto grid max-w-screen-xl grid-cols-1 lg:grid-cols-12">
           <div className="border-b border-ink p-6 sm:p-8 lg:col-span-7 lg:border-b-0 lg:border-r">
-            <SectionHeader label={p.label} title={p.title} />
+            <SectionHeader label={p.label} title={p.title} as="h1" />
             <p className="drop-cap font-body text-base leading-relaxed text-neutral-600">
               {GIAO_XU.gioiThieu}
             </p>
@@ -48,12 +48,12 @@ export default async function GiaoXuPage({ params }: { params: Promise<{ locale:
                 [p.email, GIAO_XU.email],
               ].map(([k, v]) => (
                 <div key={k} className="border-b border-muted pb-2">
-                  <dt className="font-mono text-[11px] uppercase tracking-widest text-neutral-500">{k}</dt>
+                  <dt className="font-mono text-xs uppercase tracking-widest text-neutral-500">{k}</dt>
                   <dd className="font-body text-sm">{v}</dd>
                 </div>
               ))}
             </dl>
-            <p className="mt-3 font-mono text-[11px] uppercase tracking-widest text-neutral-500">
+            <p className="mt-3 font-mono text-xs uppercase tracking-widest text-neutral-500">
               {p.template}
             </p>
           </aside>
@@ -67,8 +67,8 @@ export default async function GiaoXuPage({ params }: { params: Promise<{ locale:
           <div className="grid grid-cols-1 border-l border-t border-ink sm:grid-cols-2">
             {CHA_XU.map((cha) => (
               <div key={cha.hoTen} className="flex gap-4 border-b border-r border-ink p-6">
-                <div className="h-24 w-20 shrink-0 border border-ink bg-neutral-200">
-                  <div className="halftone h-full w-full" />
+                <div aria-hidden className="flex h-24 w-20 shrink-0 items-center justify-center border border-ink bg-ink font-serif text-3xl font-black text-paper">
+                  {cha.hoTen.split(" ").at(-1)?.[0]}
                 </div>
                 <div>
                   <p className="font-serif text-2xl font-bold">{cha.hoTen}</p>
@@ -120,7 +120,7 @@ export default async function GiaoXuPage({ params }: { params: Promise<{ locale:
               <div key={gk.ten} className="border-b border-r border-ink p-6">
                 <p className="font-serif text-xl font-bold">{gk.ten}</p>
                 <p className="mt-2 font-body text-sm text-neutral-600">{gk.khuVuc}</p>
-                <p className="mt-2 font-mono text-[11px] uppercase tracking-widest text-neutral-500">
+                <p className="mt-2 font-mono text-xs uppercase tracking-widest text-neutral-500">
                   {p.patronOf}: {gk.boNang}
                 </p>
               </div>
@@ -147,7 +147,7 @@ export default async function GiaoXuPage({ params }: { params: Promise<{ locale:
             </p>
           </div>
           <div className="lg:col-span-7">
-            <Halftone className="h-64" caption={p.caption} />
+            <EditorialPlate title={p.officeHours} label={p.office} marker="106" logo caption={p.caption} className="h-72" />
           </div>
         </div>
       </section>

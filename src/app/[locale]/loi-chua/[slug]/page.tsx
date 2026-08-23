@@ -59,7 +59,7 @@ export default async function SuyNiemPage({ params }: { params: Promise<{ locale
 
       <div className="border-b border-ink">
         <div className="mx-auto max-w-screen-xl px-4 py-12">
-          <div className="prose-newsprint max-w-3xl text-justify">
+          <div className="prose-newsprint max-w-3xl">
             <MDXRemote
                 source={bai.content}
                 options={{ blockJS: true, blockDangerousJS: true, mdxOptions: { format: "md" } }}

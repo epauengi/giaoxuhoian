@@ -6,11 +6,13 @@ export function SectionHeader({
   title,
   className,
   invert = false,
+  as: Heading = "h2",
 }: {
   label: string;
   title: string;
   className?: string;
   invert?: boolean;
+  as?: "h1" | "h2";
 }) {
   return (
     <header className={cn("mb-8", className)}>
@@ -22,15 +24,15 @@ export function SectionHeader({
       >
         {label}
       </p>
-      <h2
+      <Heading
         className={cn(
           "font-serif text-4xl font-black tracking-tight lg:text-5xl",
           invert ? "text-paper" : "text-ink"
         )}
       >
         {title}
-      </h2>
-      <div className={cn("mt-4 h-1 w-24", invert ? "bg-paper" : "bg-ink")} />
+      </Heading>
+      <div aria-hidden className={cn("mt-4 h-1 w-24", invert ? "bg-paper" : "bg-ink")} />
     </header>
   );
 }
