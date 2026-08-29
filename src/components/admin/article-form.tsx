@@ -1,15 +1,18 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type ChangeEvent } from "react";
 import Link from "next/link";
 import { useActionState } from "react";
 import { Field, Input, Select, Textarea } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import type { ArticleKind, ArticleStatus, BaiViet } from "@/lib/article-types";
 import { CATEGORY_LABELS } from "@/lib/article-types";
+import { slugifyArticleTitle } from "@/lib/article-slug";
 import type { ArticleActionState } from "@/app/admin/bai-viet/actions";
 
 const initialState: ArticleActionState = {};
+const SLUG_MODES = ["suggested", "current", "custom"] as const;
+type SlugMode = (typeof SLUG_MODES)[number];
 
 const categoryByKind: Record<ArticleKind, readonly string[]> = {
   "bai-viet": ["thong-bao", "sinh-hoat", "giao-hoi", "cao-pho", "rao-hon-phoi"],
@@ -20,7 +23,7 @@ const fieldLabels: Record<string, string> = {
   kind: "Nhóm",
   status: "Trạng thái",
   title: "Tiêu đề",
-  slug: "Slug",
+  slug: "Đường dẫn bài viết",
   date: "Ngày",
   category: "Chuyên mục",
   author: "Tác giả",
@@ -43,19 +46,21 @@ export function ArticleForm({
   const [kind, setKind] = useState<ArticleKind>(article?.kind ?? "bai-viet");
   const [status, setStatus] = useState<ArticleStatus>(article?.status ?? "draft");
   const [category, setCategory] = useState(article?.category ?? categoryByKind["bai-viet"][0]);
+  const [title, setTitle] = useState(article?.title ?? "");
+  const [slug, setSlug] = useState(article?.slug ?? "");
+  const [slugMode, setSlugMode] = useState<SlugMode>(article?.slug ? "current" : "suggested");
   const summaryRef = useRef<HTMLDivElement>(null);
+  const slugEditRef = useRef<HTMLInputElement>(null);
   const fieldErrors = state.fieldErrors ?? {};
   const hasErrors = Boolean(state.formError || Object.keys(fieldErrors).length);
   const categories = categoryByKind[kind];
+  const suggestedSlug = slugifyArticleTitle(title);
+  const submittedSlug = slugMode === "suggested" ? suggestedSlug : slug;
+  const isCustomSlug = slugMode === "custom";
 
   useEffect(() => {
     if (hasErrors) summaryRef.current?.focus();
   }, [hasErrors, state]);
-
-  const changeKind = (nextKind: ArticleKind) => {
-    setKind(nextKind);
-    if (!categoryByKind[nextKind].includes(category)) setCategory(categoryByKind[nextKind][0]);
-  };
 
   const errorFor = (field: string) => fieldErrors[field]?.[0];
   const describedBy = (id: string, field: string, hasHint = false) => {
@@ -63,6 +68,33 @@ export function ArticleForm({
     if (hasHint) ids.push(`${id}-hint`);
     if (errorFor(field)) ids.push(`${id}-error`);
     return ids.length ? ids.join(" ") : undefined;
+  };
+
+  const updateTitle = (nextTitle: string) => {
+    setTitle(nextTitle);
+    if (slugMode === "suggested") setSlug(slugifyArticleTitle(nextTitle));
+  };
+
+  const changeSlugMode = (nextMode: SlugMode) => {
+    setSlugMode(nextMode);
+    if (nextMode === "suggested") setSlug(suggestedSlug);
+    if (nextMode === "current") setSlug(article?.slug ?? suggestedSlug);
+    if (nextMode === "custom") requestAnimationFrame(() => slugEditRef.current?.focus());
+  };
+
+  const selectSlugMode = (event: ChangeEvent<HTMLSelectElement>) => {
+    const nextMode = event.target.value;
+    if (SLUG_MODES.includes(nextMode as SlugMode)) changeSlugMode(nextMode as SlugMode);
+  };
+
+  const updateSlug = (nextSlug: string) => {
+    setSlug(nextSlug);
+    if (slugMode !== "custom") setSlugMode("custom");
+  };
+
+  const changeKind = (nextKind: ArticleKind) => {
+    setKind(nextKind);
+    if (!categoryByKind[nextKind].includes(category)) setCategory(categoryByKind[nextKind][0]);
   };
 
   return (
@@ -90,7 +122,7 @@ export function ArticleForm({
           <legend className="bg-paper px-2 font-serif text-2xl font-bold">Nội dung</legend>
           <div className="space-y-6">
             <Field label="Tiêu đề" required>
-              <Input id="article-title" name="title" defaultValue={article?.title} maxLength={200} required aria-invalid={Boolean(errorFor("title"))} aria-describedby={describedBy("article-title", "title")} />
+              <Input id="article-title" name="title" value={title} onChange={(event) => updateTitle(event.target.value)} maxLength={200} required aria-invalid={Boolean(errorFor("title"))} aria-describedby={describedBy("article-title", "title")} />
               <FieldError field="title" error={errorFor("title")} />
             </Field>
             <Field label="Tóm tắt" required>
@@ -137,11 +169,25 @@ export function ArticleForm({
               <Input id="article-author" name="author" defaultValue={article?.author} maxLength={120} required aria-invalid={Boolean(errorFor("author"))} aria-describedby={describedBy("article-author", "author")} />
               <FieldError field="author" error={errorFor("author")} />
             </Field>
-            <Field label="Slug" required>
-              <Input id="article-slug" name="slug" defaultValue={article?.slug} maxLength={120} pattern="[a-z0-9]+(?:-[a-z0-9]+)*" required aria-invalid={Boolean(errorFor("slug"))} aria-describedby={describedBy("article-slug", "slug", true)} />
-              <p id="article-slug-hint" className="mt-2 break-words font-sans text-xs leading-relaxed text-neutral-500">Chữ thường, số và dấu gạch ngang. Ví dụ: gio-le-chua-nhat.</p>
+
+            <div>
+              <label htmlFor="article-slug-mode" className="mb-1 block font-sans text-xs font-semibold uppercase tracking-widest text-neutral-600">
+                Đường dẫn bài viết <span className="text-accent">*</span>
+              </label>
+              <Select id="article-slug" value={slugMode} onChange={selectSlugMode} aria-invalid={Boolean(errorFor("slug"))} aria-describedby={describedBy("article-slug", "slug", true)}>
+                {article?.slug && <option value="current">Giữ đường dẫn hiện tại</option>}
+                <option value="suggested">Tạo từ tiêu đề</option>
+                <option value="custom">Tự nhập đường dẫn</option>
+              </Select>
+              {!isCustomSlug && <input type="hidden" name="slug" value={submittedSlug} />}
+              {isCustomSlug && (
+                <Input ref={slugEditRef} id="article-custom-slug" name="slug" value={slug} onChange={(event) => updateSlug(event.target.value)} maxLength={120} pattern="[a-z0-9]+(?:-[a-z0-9]+)*" required aria-invalid={Boolean(errorFor("slug"))} aria-describedby={describedBy("article-custom-slug", "slug", true)} className="mt-3" />
+              )}
+              <p id="article-slug-hint" className="mt-2 break-words font-sans text-xs leading-relaxed text-neutral-500">{article?.status === "published" ? "Đổi đường dẫn bài đã đăng có thể làm hỏng liên kết cũ." : "Đường dẫn được tạo từ tiêu đề, giúp người đọc nhận ra địa chỉ bài viết."}</p>
+              <p aria-live="polite" className="mt-2 break-all font-mono text-xs text-neutral-600">Xem trước: {submittedSlug ? `/${submittedSlug}` : "chưa có đường dẫn"}</p>
               <FieldError field="slug" error={errorFor("slug")} />
-            </Field>
+            </div>
+
             <Field label="Thẻ (phân tách bằng dấu phẩy)">
               <Input id="article-tags" name="tags" defaultValue={article?.tags.join(", ")} maxLength={500} aria-invalid={Boolean(errorFor("tags"))} aria-describedby={describedBy("article-tags", "tags", true)} />
               <p id="article-tags-hint" className="mt-2 font-sans text-xs leading-relaxed text-neutral-500">Tối đa 12 thẻ, giúp tìm lại nội dung.</p>

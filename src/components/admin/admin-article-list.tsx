@@ -64,7 +64,7 @@ export function AdminArticleList({ articles, initialFilters = {} }: { articles: 
           <label className="relative block">
             <span className="sr-only">Tìm bài viết</span>
             <Search aria-hidden size={17} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-neutral-500" />
-            <Input value={filters.q ?? ""} onChange={(event) => setFilter("q", event.target.value)} placeholder="Tìm theo tiêu đề, tác giả, slug…" className="border border-ink bg-neutral-100 pl-10" />
+            <Input value={filters.q ?? ""} onChange={(event) => setFilter("q", event.target.value)} placeholder="Tìm theo tiêu đề, tác giả, đường dẫn…" className="border border-ink bg-neutral-100 pl-10" />
           </label>
           <label>
             <span className="sr-only">Trạng thái</span>
@@ -146,7 +146,7 @@ function DesktopArticleRow({ article }: { article: BaiViet }) {
     <tr className="border-b border-muted align-top last:border-0 hover:bg-neutral-100">
       <td className="max-w-md p-4">
         <Link href={`/admin/bai-viet/${article.id}/sua`} className="font-serif text-lg font-bold leading-tight underline decoration-accent decoration-2 underline-offset-4 hover:text-accent">{article.title}</Link>
-        <p className="mt-1 break-all font-mono text-xs text-neutral-500">/{article.slug}</p>
+        <p className="mt-1 break-all font-mono text-xs text-neutral-500" aria-label={`Đường dẫn: ${article.slug}`}>/{article.slug}</p>
         <p className="mt-2 font-sans text-xs text-neutral-600">{CATEGORY_LABELS[article.category] ?? article.category}</p>
       </td>
       <td className="p-4 font-sans text-sm">{kindLabels[article.kind]}</td>
@@ -162,7 +162,7 @@ function MobileArticleCard({ article }: { article: BaiViet }) {
     <article className="border-2 border-ink p-4 transition-[background-color,transform] duration-200 hover:-translate-y-0.5 hover:bg-neutral-100 sm:p-5">
       <div className="flex flex-wrap items-center justify-between gap-2"><StatusBadge article={article} /><time dateTime={article.date} className="font-mono text-xs text-neutral-600">{formatArticleDate(article.date)}</time></div>
       <Link href={`/admin/bai-viet/${article.id}/sua`} className="mt-3 block font-serif text-xl font-bold leading-tight underline decoration-accent decoration-2 underline-offset-4 hover:text-accent">{article.title}</Link>
-      <p className="mt-1 break-all font-mono text-xs text-neutral-500">/{article.slug}</p>
+      <p className="mt-1 break-all font-mono text-xs text-neutral-500" aria-label={`Đường dẫn: ${article.slug}`}>/{article.slug}</p>
       <div className="mt-4 flex flex-wrap items-center justify-between gap-3 border-t border-muted pt-3"><p className="font-sans text-xs text-neutral-600">{kindLabels[article.kind]} · {CATEGORY_LABELS[article.category] ?? article.category}</p><ArticleActions article={article} /></div>
     </article>
   );

@@ -52,7 +52,7 @@ export async function createArticle(
     refreshArticles();
     redirect(`/admin/bai-viet/${article._id.toString()}/sua`);
   } catch (error) {
-    if (isDuplicateKey(error)) return { fieldErrors: { slug: ["Slug đã tồn tại trong nhóm này"] } };
+    if (isDuplicateKey(error)) return { fieldErrors: { slug: ["Đường dẫn đã tồn tại trong nhóm này"] } };
     throw error;
   }
 }
@@ -80,7 +80,7 @@ export async function updateArticle(
     refreshArticles();
     redirect(`/admin/bai-viet/${id.data}/sua`);
   } catch (error) {
-    if (isDuplicateKey(error)) return { fieldErrors: { slug: ["Slug đã tồn tại trong nhóm này"] } };
+    if (isDuplicateKey(error)) return { fieldErrors: { slug: ["Đường dẫn đã tồn tại trong nhóm này"] } };
     throw error;
   }
 }

@@ -26,7 +26,7 @@ export const articleInputSchema = z
     kind: z.enum(ARTICLE_KINDS),
     status: z.enum(ARTICLE_STATUSES),
     title: z.string().trim().min(1).max(200),
-    slug: z.string().trim().regex(SLUG_RE, "Slug chỉ gồm chữ thường, số và dấu gạch ngang"),
+    slug: z.string().trim().max(120, "Đường dẫn bài viết tối đa 120 ký tự").regex(SLUG_RE, "Đường dẫn chỉ gồm chữ thường, số và dấu gạch ngang"),
     category: z.enum(ARTICLE_CATEGORIES),
     date: z.string().refine(validDate, "Ngày không hợp lệ"),
     author: z.string().trim().min(1).max(120),
