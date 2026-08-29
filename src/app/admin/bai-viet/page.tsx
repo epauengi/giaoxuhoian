@@ -1,48 +1,38 @@
 import Link from "next/link";
 import { requireAdmin } from "@/lib/auth-guard";
 import { getAdminArticles } from "@/lib/articles";
-import { CATEGORY_LABELS } from "@/lib/article-types";
+import { parseAdminArticleFilters, type AdminArticleSearchParams } from "@/lib/admin-article-filter";
 import { ButtonLink } from "@/components/ui/button";
+import { AdminArticleList } from "@/components/admin/admin-article-list";
 
-export default async function AdminArticlesPage() {
+export default async function AdminArticlesPage({ searchParams }: { searchParams: Promise<AdminArticleSearchParams> }) {
   await requireAdmin();
-  const articles = await getAdminArticles();
+  const [articles, params] = await Promise.all([getAdminArticles(), searchParams]);
+  const filters = parseAdminArticleFilters(params);
+  const publishedCount = articles.filter((article) => article.status === "published").length;
+  const draftCount = articles.length - publishedCount;
+
   return (
-    <>
-      <div className="flex items-end justify-between gap-4">
+    <main className="mx-auto max-w-screen-xl px-4 py-8 sm:px-6 sm:py-10 lg:px-8">
+      <header className="flex flex-col gap-6 border-b-2 border-ink pb-7 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <p className="font-mono text-xs uppercase tracking-widest text-neutral-500">Nội dung</p>
-          <h1 className="mt-1 font-serif text-4xl font-black">Bài viết</h1>
+          <nav aria-label="Breadcrumb" className="mb-5 font-mono text-xs uppercase tracking-[0.16em] text-neutral-500">
+            <Link href="/admin" className="hover:text-accent">Quản trị</Link><span aria-hidden> / </span><span className="text-ink">Bài viết</span>
+          </nav>
+          <p className="font-sans text-xs font-bold uppercase tracking-[0.18em] text-accent">Trạm biên tập</p>
+          <h1 className="mt-2 font-serif text-4xl font-black tracking-tight sm:text-5xl">Bài viết</h1>
+          <p className="mt-3 max-w-xl font-body text-lg leading-relaxed text-neutral-600">Soạn, rà soát và xuất bản nội dung trên website giáo xứ.</p>
         </div>
-        <ButtonLink href="/admin/bai-viet/moi">Tạo bài viết</ButtonLink>
-      </div>
-      <div className="mt-8 overflow-x-auto border border-ink">
-        <table className="w-full border-collapse text-left">
-          <thead className="bg-ink text-paper">
-            <tr>
-              <th className="p-3 font-sans text-xs uppercase tracking-widest">Tiêu đề</th>
-              <th className="p-3 font-sans text-xs uppercase tracking-widest">Nhóm</th>
-              <th className="p-3 font-sans text-xs uppercase tracking-widest">Trạng thái</th>
-              <th className="p-3 font-sans text-xs uppercase tracking-widest">Ngày</th>
-            </tr>
-          </thead>
-          <tbody>
-            {articles.map((article) => (
-              <tr key={article.id} className="border-b border-muted last:border-0">
-                <td className="p-3">
-                  <Link href={`/admin/bai-viet/${article.id}/sua`} className="font-serif font-bold underline-offset-4 hover:underline">
-                    {article.title}
-                  </Link>
-                  <p className="font-mono text-xs text-neutral-500">/{article.slug}</p>
-                </td>
-                <td className="p-3 text-sm">{CATEGORY_LABELS[article.category] ?? article.category}</td>
-                <td className="p-3 text-sm">{article.status === "published" ? "Đã đăng" : "Bản nháp"}</td>
-                <td className="p-3 font-mono text-sm">{article.date}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    </>
+        <ButtonLink href="/admin/bai-viet/moi" className="shrink-0">Tạo bài viết</ButtonLink>
+      </header>
+
+      <dl className="grid grid-cols-3 divide-x divide-ink border-b-2 border-ink bg-neutral-100">
+        <div className="p-4 sm:p-5"><dt className="font-sans text-[0.65rem] font-bold uppercase tracking-[0.14em] text-neutral-600">Tổng bài</dt><dd className="mt-1 font-mono text-2xl font-medium tabular-nums sm:text-3xl">{articles.length}</dd></div>
+        <div className="p-4 sm:p-5"><dt className="font-sans text-[0.65rem] font-bold uppercase tracking-[0.14em] text-neutral-600">Đã đăng</dt><dd className="mt-1 flex items-center gap-2 font-mono text-2xl font-medium tabular-nums sm:text-3xl"><span aria-hidden className="h-2 w-2 bg-accent" />{publishedCount}</dd></div>
+        <div className="p-4 sm:p-5"><dt className="font-sans text-[0.65rem] font-bold uppercase tracking-[0.14em] text-neutral-600">Bản nháp</dt><dd className="mt-1 font-mono text-2xl font-medium tabular-nums sm:text-3xl">{draftCount}</dd></div>
+      </dl>
+
+      <AdminArticleList articles={articles} initialFilters={filters} />
+    </main>
   );
 }

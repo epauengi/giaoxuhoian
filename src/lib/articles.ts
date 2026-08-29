@@ -41,7 +41,7 @@ export async function getPublishedSlugs(locale: Locale, kind: ArticleKind): Prom
 
 export async function getAdminArticles(): Promise<BaiViet[]> {
   await connectMongo();
-  const articles = await Article.find({ locale: "vi" }).select(`${publicFields} content`).sort({ date: -1, _id: -1 }).lean().exec();
+  const articles = await Article.find({ locale: "vi" }).select(publicFields).sort({ date: -1, _id: -1 }).lean().exec();
   return (articles as unknown as StoredArticle[]).map(toDto);
 }
 

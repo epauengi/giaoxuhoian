@@ -9,6 +9,7 @@
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
     "check": "npm run lint && npm run typecheck && npm run build",
+    "check:admin-filter": "node --conditions=react-server --import tsx scripts/check-admin-article-filter.ts",
     "content:import": "node --conditions=react-server --env-file=.env.local --import tsx scripts/import-mdx.ts"
   },
   "engines": {
