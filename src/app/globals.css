@@ -93,8 +93,8 @@ table,
   transform: translate(0);
 }
 
-/* One authored reveal: the hero's red rule opens like a line of ink. */
-@keyframes hero-rule-open {
+/* One authored reveal: red printer's rules set into place. */
+@keyframes rule-open {
   from {
     transform: scaleX(0.08);
   }
@@ -102,9 +102,13 @@ table,
     transform: scaleX(1);
   }
 }
-.hero-rule {
+.hero-rule,
+.footer-ledger-rule {
   transform-origin: left;
-  animation: hero-rule-open 700ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation: rule-open 700ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.footer-ledger-rule {
+  animation-delay: 120ms;
 }
 
 /* Breaking-news ticker */
@@ -137,7 +141,8 @@ table,
   .hard-shadow-hover:active {
     transform: none;
   }
-  .hero-rule {
+  .hero-rule,
+  .footer-ledger-rule {
     animation: none;
   }
 }
