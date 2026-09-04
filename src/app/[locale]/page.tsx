@@ -5,6 +5,7 @@ import { SectionHeader } from "@/components/ui/section-header";
 import { Ornament } from "@/components/ui/ornament";
 import { ButtonLink } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { NextMassBadge } from "@/components/blocks/next-mass-badge";
 import { ArticleCard } from "@/components/blocks/article-card";
 import { EditorialPlate } from "@/components/ui/editorial-plate";
 import { getPublishedArticles } from "@/lib/articles";
@@ -80,6 +81,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
 
           {/* Mass times quick column */}
           <aside className="p-6 sm:p-8 lg:col-span-4">
+            <NextMassBadge fallbackDate={homNay.toISOString()} />
             <div className="mb-4 flex items-center justify-between border-b-2 border-ink pb-2">
               <h3 className="font-sans text-xs font-bold uppercase tracking-widest">
                 {p.quickMass}

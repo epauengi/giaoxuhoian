@@ -54,10 +54,9 @@ export function Nav() {
           </ul>
         </div>
         <div className="flex items-center justify-between py-1.5 lg:hidden">
-          <Link href="/" aria-label={dict.nav.homeLabel} onClick={() => setOpen(false)} className="flex min-h-11 items-center gap-2 font-serif text-lg font-black">
-            <Image src="/logo.png" alt="" width={36} height={36} className="h-9 w-9 object-contain" />
-            <span>{dict.masthead.parish}</span>
-          </Link>
+          <span className="font-mono text-xs font-bold uppercase tracking-wider text-neutral-600">
+            {dict.nav.label}
+          </span>
           <button ref={menuButtonRef} type="button" aria-controls="mobile-navigation" aria-expanded={open} aria-label={open ? dict.nav.close : dict.nav.open} onClick={() => setOpen((value) => !value)} className="flex h-11 w-11 items-center justify-center border border-ink transition-colors duration-200 hover:bg-ink hover:text-paper">
             {open ? <X aria-hidden className="h-6 w-6" strokeWidth={1.5} /> : <Menu aria-hidden className="h-6 w-6" strokeWidth={1.5} />}
           </button>
