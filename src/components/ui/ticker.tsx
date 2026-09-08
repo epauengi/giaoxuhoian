@@ -33,7 +33,7 @@ export function Ticker({
     <section
       aria-label={ticker.region}
       data-paused={paused}
-      className={cn("ticker-group relative border-y border-ink bg-ink py-2.5 text-paper", className)}
+      className={cn("ticker-group relative overflow-hidden border-y border-ink bg-ink py-2.5 pr-14 text-paper", className)}
     >
       <div className="ticker-track">{row()}{row(true)}</div>
       <button
@@ -41,7 +41,7 @@ export function Ticker({
         aria-pressed={paused}
         aria-label={paused ? ticker.resume : ticker.pause}
         onClick={() => setPaused((value) => !value)}
-        className="ticker-pause-btn absolute inset-y-0 right-0 hidden w-12 items-center justify-center border-l border-neutral-700 bg-ink text-paper transition-colors duration-200 hover:bg-paper hover:text-ink"
+        className="ticker-pause-btn absolute inset-y-0 right-0 flex w-12 items-center justify-center border-l border-neutral-700 bg-ink text-paper transition-colors duration-200 hover:bg-paper hover:text-ink"
       >
         {paused ? <Play aria-hidden className="h-4 w-4" /> : <Pause aria-hidden className="h-4 w-4" />}
       </button>

@@ -136,82 +136,23 @@ table,
   }
 }
 
-/* Mobile: static multiline presentation, full text readable */
-.ticker-group {
-  overflow: visible;
-  padding-right: 0;
-}
 .ticker-track {
   display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  width: 100%;
-}
-.ticker-copy {
-  display: none;
-}
-.ticker-item {
-  white-space: normal;
-}
-.ticker-bullet {
-  display: none;
-}
-.ticker-pause-btn {
-  display: none;
+  width: max-content;
+  animation: ticker-scroll 40s linear infinite;
 }
 
-/* Desktop: moving ticker with pause controls */
-@media (min-width: 768px) {
-  .ticker-group {
-    overflow: hidden;
-    padding-right: 3.5rem;
-  }
-  .ticker-track {
-    flex-direction: row;
-    gap: 0;
-    width: max-content;
-    animation: ticker-scroll 40s linear infinite;
-  }
-  .ticker-copy {
-    display: flex;
-  }
-  .ticker-item {
-    white-space: nowrap;
-  }
-  .ticker-bullet {
-    display: inline;
-  }
-  .ticker-pause-btn {
-    display: flex;
-  }
-  .ticker-group:is(:hover, :focus-within) .ticker-track,
-  .ticker-group[data-paused="true"] .ticker-track {
-    animation-play-state: paused;
-  }
+.ticker-group:is(:hover, :focus-within) .ticker-track,
+.ticker-group[data-paused="true"] .ticker-track {
+  animation-play-state: paused;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .ticker-group {
-    overflow: visible !important;
-    padding-right: 0 !important;
-  }
   .ticker-track {
     animation: none !important;
-    flex-direction: column !important;
-    gap: 0.5rem !important;
-    width: 100% !important;
   }
-  .ticker-copy {
-    display: none !important;
-  }
-  .ticker-item {
-    white-space: normal !important;
-  }
-  .ticker-bullet {
-    display: none !important;
-  }
-  .ticker-pause-btn {
-    display: none !important;
+  .ticker-group {
+    overflow-x: auto !important;
   }
   .hard-shadow-hover:is(:hover, :focus-within),
   .hard-shadow-hover:active {
