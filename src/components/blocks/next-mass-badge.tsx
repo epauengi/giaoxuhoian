@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Clock } from "lucide-react";
 import { getNextMass, NextMassResult } from "@/lib/data/gio-le";
 
 export function NextMassBadge({ fallbackDate }: { fallbackDate?: string }) {
@@ -29,21 +28,18 @@ export function NextMassBadge({ fallbackDate }: { fallbackDate?: string }) {
   };
 
   return (
-    <div className="mb-4 border border-ink bg-ink p-3 text-paper">
-      <div className="flex items-center justify-between">
-        <span className="inline-flex items-center gap-1.5 font-mono text-[10px] font-bold uppercase tracking-widest text-neutral-400">
-          <span className="relative flex h-2 w-2">
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-75" />
-            <span className="relative inline-flex h-2 w-2 rounded-full bg-accent" />
-          </span>
+    <div className="mb-4 border border-ink bg-ink p-3.5 text-paper">
+      <div className="flex flex-wrap items-center justify-between gap-1.5">
+        <span className="inline-flex items-center gap-2 font-mono text-xs font-bold uppercase tracking-wider text-neutral-300">
+          <span className="inline-block h-2 w-2 rounded-full bg-accent" aria-hidden="true" />
           LỄ KẾ TIẾP
         </span>
-        <span className="font-mono text-[11px] text-accent">
+        <span className="font-mono text-sm font-medium text-paper">
           {formatCountdown(current.diffMinutes)}
         </span>
       </div>
-      <div className="mt-1.5 flex items-baseline justify-between">
-        <span className="font-mono text-2xl font-bold tracking-tight text-paper">
+      <div className="mt-2 flex items-baseline justify-between gap-2">
+        <span className="font-mono text-2xl sm:text-3xl font-bold tracking-tight text-paper">
           {current.time}
         </span>
         <span className="font-sans text-xs font-semibold uppercase tracking-wider text-neutral-300">
@@ -51,7 +47,7 @@ export function NextMassBadge({ fallbackDate }: { fallbackDate?: string }) {
         </span>
       </div>
       {current.note && (
-        <p className="mt-1 font-body text-xs italic text-neutral-400">
+        <p className="mt-1.5 font-body text-xs italic text-neutral-300">
           {current.note}
         </p>
       )}

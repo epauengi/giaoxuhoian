@@ -99,7 +99,7 @@ export function getNextMass(date: Date = new Date()): NextMassResult {
   let isTomorrow = false;
 
   for (const slot of ALL_WEEKLY_MASSES) {
-    let dayDiff = slot.dayOfWeek - currentDay;
+    const dayDiff = slot.dayOfWeek - currentDay;
     let minuteDiff = dayDiff * 24 * 60 + (slot.minutes - currentMinutes);
 
     if (minuteDiff <= 0) {

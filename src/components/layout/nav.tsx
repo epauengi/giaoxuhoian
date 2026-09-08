@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
@@ -47,7 +46,18 @@ export function Nav() {
               const active = isNavItemActive(pathname, item.href);
               return (
                 <li key={item.href} className="border-r border-ink first:border-l">
-                  <Link href={item.href} aria-current={active ? "page" : undefined} className={cn("flex min-h-11 items-center px-4 font-sans text-xs font-semibold uppercase tracking-widest transition-colors duration-200 hover:bg-ink hover:text-paper", active && "bg-ink text-paper")}>{item.label}</Link>
+                  <Link
+                    href={item.href}
+                    aria-current={active ? "page" : undefined}
+                    className={cn(
+                      "flex min-h-11 items-center px-4 font-sans text-xs font-semibold uppercase tracking-widest transition-colors duration-200",
+                      active
+                        ? "bg-ink text-paper"
+                        : "text-ink hover:bg-ink hover:text-paper"
+                    )}
+                  >
+                    {item.label}
+                  </Link>
                 </li>
               );
             })}
@@ -57,16 +67,41 @@ export function Nav() {
           <span className="font-mono text-xs font-bold uppercase tracking-wider text-neutral-600">
             {dict.nav.label}
           </span>
-          <button ref={menuButtonRef} type="button" aria-controls="mobile-navigation" aria-expanded={open} aria-label={open ? dict.nav.close : dict.nav.open} onClick={() => setOpen((value) => !value)} className="flex h-11 w-11 items-center justify-center border border-ink transition-colors duration-200 hover:bg-ink hover:text-paper">
+          <button
+            ref={menuButtonRef}
+            type="button"
+            aria-controls="mobile-navigation"
+            aria-expanded={open}
+            aria-label={open ? dict.nav.close : dict.nav.open}
+            onClick={() => setOpen((value) => !value)}
+            className="flex h-11 w-11 items-center justify-center border border-ink transition-colors duration-200 hover:bg-ink hover:text-paper"
+          >
             {open ? <X aria-hidden className="h-6 w-6" strokeWidth={1.5} /> : <Menu aria-hidden className="h-6 w-6" strokeWidth={1.5} />}
           </button>
         </div>
       </div>
       {open ? (
-        <ul id="mobile-navigation" className="border-t border-ink bg-paper lg:hidden">
+        <ul id="mobile-navigation" className="mobile-menu-enter border-t border-ink bg-paper lg:hidden">
           {navItems.map((item, index) => {
             const active = isNavItemActive(pathname, item.href);
-            return <li key={item.href} className="border-b border-muted last:border-b-0"><Link ref={index === 0 ? firstLinkRef : undefined} href={item.href} onClick={() => setOpen(false)} aria-current={active ? "page" : undefined} className={cn("flex min-h-11 items-center px-4 font-sans text-sm font-semibold uppercase tracking-widest transition-colors duration-200 hover:bg-neutral-100", active && "bg-ink text-paper")}>{item.label}</Link></li>;
+            return (
+              <li key={item.href} className="border-b border-muted last:border-b-0">
+                <Link
+                  ref={index === 0 ? firstLinkRef : undefined}
+                  href={item.href}
+                  onClick={() => setOpen(false)}
+                  aria-current={active ? "page" : undefined}
+                  className={cn(
+                    "flex min-h-11 items-center px-4 font-sans text-sm font-semibold uppercase tracking-widest transition-colors duration-200",
+                    active
+                      ? "bg-ink text-paper"
+                      : "text-ink hover:bg-neutral-100"
+                  )}
+                >
+                  {item.label}
+                </Link>
+              </li>
+            );
           })}
         </ul>
       ) : null}

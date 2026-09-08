@@ -84,16 +84,18 @@ table,
   transition: box-shadow 180ms ease-out, transform 180ms ease-out,
     background-color 180ms ease-out;
 }
-.hard-shadow-hover:is(:hover, :focus-within) {
-  box-shadow: 4px 4px 0 0 var(--color-ink);
-  transform: translate(-2px, -2px);
+@media (hover: hover) and (pointer: fine) {
+  .hard-shadow-hover:is(:hover, :focus-within) {
+    box-shadow: 4px 4px 0 0 var(--color-ink);
+    transform: translate(-2px, -2px);
+  }
 }
 .hard-shadow-hover:active {
   box-shadow: 1px 1px 0 0 var(--color-ink);
   transform: translate(0);
 }
 
-/* One authored reveal: red printer's rules set into place. */
+/* One authored reveal: red printer's rules set into place (restrained 400ms). */
 @keyframes rule-open {
   from {
     transform: scaleX(0.08);
@@ -105,10 +107,23 @@ table,
 .hero-rule,
 .footer-ledger-rule {
   transform-origin: left;
-  animation: rule-open 700ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation: rule-open 400ms cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 .footer-ledger-rule {
   animation-delay: 120ms;
+}
+
+/* Mobile menu subtle entry opacity */
+@keyframes menu-open {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.mobile-menu-enter {
+  animation: menu-open 180ms ease-out both;
 }
 
 /* Breaking-news ticker */
@@ -120,29 +135,91 @@ table,
     transform: translateX(-50%);
   }
 }
+
+/* Mobile: static multiline presentation, full text readable */
+.ticker-group {
+  overflow: visible;
+  padding-right: 0;
+}
 .ticker-track {
   display: flex;
-  width: max-content;
-  animation: ticker-scroll 40s linear infinite;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 100%;
 }
-.ticker-group:is(:hover, :focus-within) .ticker-track,
-.ticker-group[data-paused="true"] .ticker-track {
-  animation-play-state: paused;
+.ticker-copy {
+  display: none;
+}
+.ticker-item {
+  white-space: normal;
+}
+.ticker-bullet {
+  display: none;
+}
+.ticker-pause-btn {
+  display: none;
+}
+
+/* Desktop: moving ticker with pause controls */
+@media (min-width: 768px) {
+  .ticker-group {
+    overflow: hidden;
+    padding-right: 3.5rem;
+  }
+  .ticker-track {
+    flex-direction: row;
+    gap: 0;
+    width: max-content;
+    animation: ticker-scroll 40s linear infinite;
+  }
+  .ticker-copy {
+    display: flex;
+  }
+  .ticker-item {
+    white-space: nowrap;
+  }
+  .ticker-bullet {
+    display: inline;
+  }
+  .ticker-pause-btn {
+    display: flex;
+  }
+  .ticker-group:is(:hover, :focus-within) .ticker-track,
+  .ticker-group[data-paused="true"] .ticker-track {
+    animation-play-state: paused;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .ticker-group {
+    overflow: visible !important;
+    padding-right: 0 !important;
+  }
   .ticker-track {
-    animation: none;
+    animation: none !important;
+    flex-direction: column !important;
+    gap: 0.5rem !important;
+    width: 100% !important;
   }
   .ticker-copy {
-    display: none;
+    display: none !important;
+  }
+  .ticker-item {
+    white-space: normal !important;
+  }
+  .ticker-bullet {
+    display: none !important;
+  }
+  .ticker-pause-btn {
+    display: none !important;
   }
   .hard-shadow-hover:is(:hover, :focus-within),
   .hard-shadow-hover:active {
     transform: none;
   }
   .hero-rule,
-  .footer-ledger-rule {
+  .footer-ledger-rule,
+  .mobile-menu-enter {
     animation: none;
   }
 }
@@ -153,16 +230,18 @@ table,
   opacity: 0.55;
 }
 
-/* Drop cap for editorial intros */
-.drop-cap::first-letter {
-  float: left;
-  font-family: var(--font-serif);
-  font-size: 4.5rem;
-  font-weight: 900;
-  line-height: 0.8;
-  padding-right: 0.5rem;
-  padding-top: 0.25rem;
-  color: var(--color-ink);
+/* Drop cap for editorial intros (large screens only) */
+@media (min-width: 640px) {
+  .drop-cap::first-letter {
+    float: left;
+    font-family: var(--font-serif);
+    font-size: 4.5rem;
+    font-weight: 900;
+    line-height: 0.8;
+    padding-right: 0.5rem;
+    padding-top: 0.25rem;
+    color: var(--color-ink);
+  }
 }
 
 /* Focus: visible on both paper and ink surfaces */

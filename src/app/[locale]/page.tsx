@@ -7,7 +7,6 @@ import { ButtonLink } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { NextMassBadge } from "@/components/blocks/next-mass-badge";
 import { ArticleCard } from "@/components/blocks/article-card";
-import { EditorialPlate } from "@/components/ui/editorial-plate";
 import { getPublishedArticles } from "@/lib/articles";
 import { formatDate } from "@/lib/article-types";
 import { GIO_LE_THUONG_KY, NGAY_CAP_NHAT_GIO_LE } from "@/lib/data/gio-le";
@@ -56,22 +55,19 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
       {/* Hero: 8/4 asymmetric split */}
       <section className="newsprint-texture border-b border-ink">
         <div className="mx-auto grid max-w-screen-xl grid-cols-1 lg:grid-cols-12">
-          <div className="border-b border-ink p-6 sm:p-8 lg:col-span-8 lg:border-b-0 lg:border-r">
-            <p className="mb-3 font-mono text-xs uppercase tracking-widest text-neutral-500">
+          <div className="border-b border-ink p-5 sm:p-8 lg:col-span-8 lg:border-b-0 lg:border-r">
+            <p className="mb-3 font-mono text-xs uppercase tracking-wider text-neutral-600">
               {formatDateLocale(homNay)} · {phungVu.mauPhungVu === "Xanh" ? "Mùa Thường niên" : phungVu.mauPhungVu}
             </p>
-            <h1 className="font-serif text-5xl font-black leading-[0.95] tracking-tighter text-ink sm:text-6xl lg:text-8xl">
-              {p.heroLead}
-              <br />
-              {p.heroMiddle}
-              <br />
-              <span className="italic font-bold">{p.heroEmphasis}</span>
+            <h1 className="font-serif text-4xl font-black leading-[1.05] tracking-tight text-ink sm:text-6xl sm:leading-[0.95] sm:tracking-tighter lg:text-8xl">
+              {p.heroLead} <span className="sm:block">{p.heroMiddle}</span>{" "}
+              <span className="italic font-bold sm:block">{p.heroEmphasis}</span>
             </h1>
-            <div aria-hidden className="hero-rule mt-5 h-1 w-32 bg-accent" />
-            <p className="drop-cap mt-6 max-w-2xl font-body text-base leading-relaxed text-neutral-600 sm:text-lg">
+            <div aria-hidden className="hero-rule mt-4 h-1 w-28 bg-accent sm:w-32" />
+            <p className="drop-cap mt-5 max-w-2xl font-body text-base leading-relaxed text-neutral-700 sm:text-lg">
               {p.heroDescription}
             </p>
-            <div className="mt-8 flex flex-wrap gap-3">
+            <div className="mt-6 flex flex-wrap gap-3 sm:mt-8">
               <ButtonLink href={path("/phung-vu")}>{p.viewMass}</ButtonLink>
               <ButtonLink href={path("/lien-he")} variant="secondary">
                 {p.directionsToChurch}
@@ -80,34 +76,34 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
           </div>
 
           {/* Mass times quick column */}
-          <aside className="p-6 sm:p-8 lg:col-span-4">
+          <aside className="p-5 sm:p-8 lg:col-span-4">
             <NextMassBadge fallbackDate={homNay.toISOString()} />
             <div className="mb-4 flex items-center justify-between border-b-2 border-ink pb-2">
-              <h3 className="font-sans text-xs font-bold uppercase tracking-widest">
+              <h3 className="font-sans text-xs font-bold uppercase tracking-wider">
                 {p.quickMass}
               </h3>
-              <span className="font-mono text-xs uppercase tracking-widest text-neutral-500">
+              <span className="font-mono text-xs uppercase tracking-wider text-neutral-600">
                 {p.updated} {NGAY_CAP_NHAT_GIO_LE}
               </span>
             </div>
             <dl>
               {GIO_LE_THUONG_KY.map((g) => (
-                <div key={g.ngay} className="border-b border-muted py-3 last:border-b-0">
-                  <dt className="font-sans text-xs font-semibold uppercase tracking-widest text-neutral-600">
+                <div key={g.ngay} className="border-b border-muted py-2.5 last:border-b-0 sm:py-3">
+                  <dt className="font-sans text-xs font-semibold uppercase tracking-wider text-neutral-600">
                     {g.ngay}
                   </dt>
                   <dd className="mt-1 font-mono text-2xl font-medium tracking-tight">
                     {g.gio.join(" · ")}
                   </dd>
                   {g.ghiChu && (
-                    <dd className="mt-0.5 font-body text-xs italic text-neutral-500">{g.ghiChu}</dd>
+                    <dd className="mt-0.5 font-body text-xs italic text-neutral-600">{g.ghiChu}</dd>
                   )}
                 </div>
               ))}
             </dl>
             <Link
               href={path("/phung-vu")}
-              className="mt-4 inline-flex items-center gap-1 font-sans text-xs font-semibold uppercase tracking-widest decoration-accent decoration-2 underline-offset-4 hover:underline"
+              className="mt-4 inline-flex items-center gap-1 font-sans text-xs font-semibold uppercase tracking-wider decoration-accent decoration-2 underline-offset-4 hover:underline"
             >
               {p.fullSchedule} <ArrowRight className="h-4 w-4" strokeWidth={1.5} />
             </Link>
@@ -176,7 +172,6 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
             {tinTieuDiem && (
               <div className="lg:col-span-7">
                 <ArticleCard locale={locale} bai={tinTieuDiem} href={path(`/tin-tuc/${tinTieuDiem.slug}`)} featured />
-                <EditorialPlate title={tinTieuDiem.title} label="Bản tin giáo xứ" marker={new Date(tinTieuDiem.date).getFullYear().toString()} caption={p.newsCaption} className="mt-4 h-56" />
               </div>
             )}
             <div className="space-y-6 lg:col-span-5">
@@ -227,18 +222,18 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
             {suyNiemMoi.map((bai) => (
               <article key={bai.slug} className="hard-shadow-hover group border border-ink bg-paper">
-                <Link href={path(`/loi-chua/${bai.slug}`)} className="block p-6">
-                  <div className="mb-2 flex items-center gap-2">
+                <Link href={path(`/loi-chua/${bai.slug}`)} className="block p-5 sm:p-6">
+                  <div className="mb-2.5 flex flex-wrap items-center gap-2">
                     <Badge>{bai.category === "suy-niem-chua-nhat" ? p.sunday : p.daily}</Badge>
-                    <span className="font-mono text-xs uppercase tracking-widest text-neutral-500">
+                    <span className="font-mono text-xs uppercase tracking-wider text-neutral-600">
                       {formatDate(bai.date)}
                     </span>
                   </div>
-                  <h3 className="font-serif text-2xl font-bold group-hover:underline group-focus-within:underline group-hover:decoration-accent group-focus-within:decoration-accent group-hover:decoration-2 group-focus-within:decoration-2 group-hover:underline-offset-4 group-focus-within:underline-offset-4">{bai.title}</h3>
-                  <p className="mt-2 font-body text-sm leading-relaxed text-neutral-600">
+                  <h3 className="font-serif text-xl sm:text-2xl font-bold text-ink group-hover:underline group-focus-within:underline group-hover:decoration-accent group-focus-within:decoration-accent group-hover:decoration-2 group-focus-within:decoration-2 group-hover:underline-offset-4 group-focus-within:underline-offset-4">{bai.title}</h3>
+                  <p className="mt-2.5 font-body text-base leading-relaxed text-neutral-700">
                     {bai.summary}
                   </p>
-                  <p className="mt-3 font-mono text-xs uppercase tracking-widest text-neutral-500">
+                  <p className="mt-3 font-mono text-xs uppercase tracking-wider text-neutral-600">
                     {bai.author}
                   </p>
                 </Link>
