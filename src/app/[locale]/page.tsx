@@ -37,7 +37,8 @@ const QUICK_LINKS = [
 export default async function HomePage({ params }: { params: Promise<{ locale: string }> }) {
   const locale = "vi" as const;
   const path = (href: string) => localePath(locale, href);
-  const p = getDictionary(locale).page.home;
+  const d = getDictionary(locale);
+  const p = d.page.home;
   const homNay = new Date();
   const baiViet = await getPublishedArticles(locale, "bai-viet");
   const [tinTieuDiem, ...tinMoi] = baiViet.slice(0, 4);
@@ -169,16 +170,27 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
             </ButtonLink>
           </div>
           <div className="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-12">
-            {tinTieuDiem && (
-              <div className="lg:col-span-7">
-                <ArticleCard locale={locale} bai={tinTieuDiem} href={path(`/tin-tuc/${tinTieuDiem.slug}`)} featured />
+            {baiViet.length === 0 ? (
+              <div className="border border-dashed border-ink p-8 text-center lg:col-span-12">
+                <p className="font-body italic text-neutral-600">{d.page.news.empty}</p>
+                <ButtonLink href={path("/tin-tuc")} variant="link" className="mt-4">
+                  {p.allNews} <ArrowRight className="h-4 w-4" strokeWidth={1.5} />
+                </ButtonLink>
               </div>
+            ) : (
+              <>
+                {tinTieuDiem && (
+                  <div className="lg:col-span-7">
+                    <ArticleCard locale={locale} bai={tinTieuDiem} href={path(`/tin-tuc/${tinTieuDiem.slug}`)} featured />
+                  </div>
+                )}
+                <div className="space-y-6 lg:col-span-5">
+                  {tinMoi.map((bai) => (
+                    <ArticleCard key={bai.slug} locale={locale} bai={bai} href={path(`/tin-tuc/${bai.slug}`)} />
+                  ))}
+                </div>
+              </>
             )}
-            <div className="space-y-6 lg:col-span-5">
-              {tinMoi.map((bai) => (
-                <ArticleCard key={bai.slug} locale={locale} bai={bai} href={path(`/tin-tuc/${bai.slug}`)} />
-              ))}
-            </div>
           </div>
         </div>
       </section>
