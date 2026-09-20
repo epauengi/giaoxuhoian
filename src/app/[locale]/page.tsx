@@ -173,9 +173,6 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
             {baiViet.length === 0 ? (
               <div className="border border-dashed border-ink p-8 text-center lg:col-span-12">
                 <p className="font-body italic text-neutral-600">{d.page.news.empty}</p>
-                <ButtonLink href={path("/tin-tuc")} variant="link" className="mt-4">
-                  {p.allNews} <ArrowRight className="h-4 w-4" strokeWidth={1.5} />
-                </ButtonLink>
               </div>
             ) : (
               <>
