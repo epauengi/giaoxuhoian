@@ -1,5 +1,5 @@
-/** Dữ kiện công khai đối chiếu từ danh bạ và lược sử Giáo phận Đà Nẵng.
- * Thông tin không có xác nhận công khai được để trống, không suy đoán.
+/** Dữ kiện công khai. Địa chỉ/email lấy từ trang Facebook Giáo xứ Hội An; danh bạ Giáo phận ghi địa chỉ khác.
+ * Số điện thoại và giờ văn phòng chưa được xác nhận công khai nên để trống.
  */
 export const GIAO_XU: {
   boNang: string; giaoHat: string; giaoPhan: string; diaChi: string;
@@ -8,9 +8,9 @@ export const GIAO_XU: {
   boNang: "Thánh Tâm Chúa Giêsu",
   giaoHat: "Hội An",
   giaoPhan: "Đà Nẵng",
-  diaChi: "02 Nguyễn Trường Tộ, Hội An",
+  diaChi: "106 Nguyễn Trường Tộ, phường Cẩm Phô, Hội An",
   dienThoai: "",
-  email: "",
+  email: "giaoxuhoian0706@gmail.com",
   gioVanPhong: [],
   gioiThieu:
     "Giáo xứ Hội An thuộc Giáo hạt Hội An, Giáo phận Đà Nẵng. Cộng đoàn Công giáo tại Hội An gắn với buổi đầu truyền giáo ở Đàng Trong; nhà thờ hiện nay được xây dựng năm 1965 trên nền nhà thờ năm 1935.",

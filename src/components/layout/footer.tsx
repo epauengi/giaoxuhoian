@@ -10,7 +10,7 @@ export function Footer() {
       eyebrow={d.masthead.official}
       title={d.masthead.parish}
       description={d.footer.description}
-      contact={{ address: GIAO_XU.diaChi, phone: GIAO_XU.dienThoai, email: GIAO_XU.email }}
+      contact={{ address: GIAO_XU.diaChi, email: GIAO_XU.email }}
       columns={[
         { title: d.footer.parish, links: [["/giao-xu", d.footer.overview], ["/giao-xu/lich-su", d.footer.history], ["/cong-doan", d.footer.organizations]] },
         { title: d.footer.ministry, links: [["/phung-vu", d.footer.mass], ["/bi-tich", d.footer.sacraments], ["/loi-chua", d.footer.word]] },

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowUp, Mail, MapPin, Phone } from "lucide-react";
+import { ArrowUp, Mail, MapPin } from "lucide-react";
 
 type FooterLink = readonly [href: string, label: string];
 
@@ -14,7 +14,6 @@ type CinematicFooterProps = {
   description: string;
   contact: {
     address: string;
-    phone: string;
     email: string;
   };
   columns: ReadonlyArray<FooterColumn>;
@@ -36,8 +35,7 @@ export function CinematicFooter({
 }: CinematicFooterProps) {
   const contactItems = [
     { href: "/lien-he", label: contact.address, icon: MapPin },
-    { href: `tel:${contact.phone.replace(/\s/g, "")}`, label: `${contact.phone} (Văn phòng)`, icon: Phone },
-    { href: `mailto:${contact.email}`, label: contact.email, icon: Mail },
+    ...(contact.email ? [{ href: `mailto:${contact.email}`, label: contact.email, icon: Mail }] : []),
   ];
   const sections = [...columns, emergency];
 

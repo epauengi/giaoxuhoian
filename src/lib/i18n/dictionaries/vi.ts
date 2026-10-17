@@ -59,7 +59,7 @@ const vi = {
     topics: [["bi-tich", "Bí tích"], ["giao-ly", "Giáo lý"], ["xin-le", "Xin lễ"], ["tham-quan", "Tham quan nhà thờ"], ["truyen-thong", "Truyền thông"], ["khan-cap", "Khẩn cấp (xức dầu, báo tang)"], ["khac", "Khác"]] as const,
     honeypot: "Website",
     name: "Họ và tên",
-    contact: "Điện thoại hoặc email",
+    contact: "Email hoặc số điện thoại",
     topic: "Chủ đề",
     choose: "— Chọn chủ đề —",
     content: "Nội dung",
@@ -69,8 +69,8 @@ const vi = {
     received: "Đã nhận được ✓",
     thanks: "Cảm ơn bạn. Văn phòng giáo xứ sẽ phản hồi sớm nhất có thể. Trường hợp khẩn cấp, vui lòng gọi trực tiếp số điện thoại của giáo xứ.",
     another: "Gửi biểu mẫu khác",
-    error: "Có lỗi xảy ra, vui lòng thử lại.",
-    networkError: "Không gửi được. Vui lòng thử lại hoặc liên hệ văn phòng.",
+    error: "Chưa gửi được biểu mẫu. Vui lòng thử lại hoặc gửi email đến giaoxuhoian0706@gmail.com.",
+    networkError: "Không gửi được. Hãy thử lại khi có kết nối, hoặc liên hệ qua email giaoxuhoian0706@gmail.com.",
   },
   category: { "thong-bao": "Thông báo", "sinh-hoat": "Sinh hoạt", "giao-hoi": "Giáo hội", "suy-niem": "Suy niệm", "suy-niem-hang-ngay": "Suy niệm hằng ngày", "suy-niem-chua-nhat": "Suy niệm Chúa nhật", "cao-pho": "Cáo phó", "rao-hon-phoi": "Rao hôn phối" },
   page: {
@@ -87,7 +87,7 @@ const vi = {
     community: { label: "Cộng đoàn", title: "Đoàn thể & Giáo lý", organizations: "Các đoàn thể", patron: "Bổn mạng", activities: "Sinh hoạt", leader: "Phụ trách", catechism: "Giáo lý", courses: "Các khóa giáo lý", audience: "Đối tượng", schedule: "Lịch học", registration: "Đăng ký", open: "Đang mở", ask: "Đăng ký / hỏi về giáo lý" },
     library: { label: "Thư viện", title: "Hình ảnh · Video · Tài liệu", albums: "Album hình ảnh", photos: "ảnh", video: "Video", parishYoutube: "YouTube giáo xứ", audio: "Audio", audioDescription: "Thư viện audio (bài giảng, suy niệm, thánh ca) đang được xây dựng. Bản tin audio hằng tuần sẽ sớm có mặt.", comingSoon: "Sắp ra mắt", documents: "Tài liệu – Biểu mẫu", documentName: "Tên tài liệu", type: "Loại", updated: "Cập nhật", template: "* Tệp tải về sẽ được bổ sung khi văn phòng cung cấp bản chính thức" },
     support: { label: "Đồng hành", title: "Quyên góp & Đóng góp", description: "Mọi đóng góp của cộng đoàn được ghi nhận và báo cáo minh bạch. Thông tin tài khoản chính thức do văn phòng giáo xứ công bố.", warning: "⚠ Cảnh báo giả mạo", campaigns: "Chương trình đang thực hiện", reached: "Đã đạt", target: "Mục tiêu", deadline: "Thời hạn", methodsLabel: "Cách đóng góp", methods: "Hình thức đóng góp", accountTemplate: "* Thông tin tài khoản bản mẫu — văn phòng giáo xứ sẽ công bố số chính thức", reports: "Báo cáo thu–chi", period: "Kỳ", income: "Thu", expense: "Chi", mainContent: "Nội dung chính", reportTemplate: "* Số liệu bản mẫu — báo cáo chính thức do Hội đồng Mục vụ xác nhận" },
-    contact: { label: "Đồng hành", title: "Liên hệ & Chỉ đường", emergency: "Nhu cầu khẩn cấp", emergencyText: "Xức dầu bệnh nhân hoặc báo tang: vui lòng gọi trực tiếp số điện thoại giáo xứ dưới đây — không chờ phản hồi qua biểu mẫu.", info: "Thông tin liên hệ", address: "Địa chỉ", phone: "Điện thoại", email: "Email", office: "Văn phòng", officeHours: "Giờ văn phòng", template: "* Bản mẫu — cần giáo xứ xác nhận", map: "Bản đồ & chỉ đường", mapTitle: "Bản đồ Nhà thờ Giáo xứ Hội An", mapCaption: "Hình 4.1 — Nhà thờ nằm giữa trung tâm phố cổ Hội An, gần Chùa Cầu", form: "Biểu mẫu", formTitle: "Gửi câu hỏi / ý nguyện", formDescription: "Ý nguyện được giữ riêng tư mặc định và chỉ công khai khi bạn đồng ý. Với nhu cầu khẩn cấp (xức dầu, báo tang), hãy gọi điện trực tiếp." },
+    contact: { label: "Đồng hành", title: "Liên hệ & Chỉ đường", emergency: "Nhu cầu khẩn cấp", emergencyText: "Số điện thoại giáo xứ chưa được xác nhận công khai. Biểu mẫu và email có thể không được phản hồi ngay. Vui lòng gọi dịch vụ khẩn cấp địa phương nếu có nguy hiểm tức thời đến tính mạng hoặc sức khỏe.", info: "Thông tin liên hệ", address: "Địa chỉ", phone: "Điện thoại", email: "Email", office: "Văn phòng", officeHours: "Giờ văn phòng", template: "* Bản mẫu — cần giáo xứ xác nhận", map: "Bản đồ & chỉ đường", mapTitle: "Bản đồ Nhà thờ Giáo xứ Hội An", mapCaption: "Bản đồ dựa trên địa chỉ Facebook công khai; vui lòng xác nhận trước khi đến.", form: "Biểu mẫu", formTitle: "Gửi câu hỏi / ý nguyện", formDescription: "Ý nguyện được giữ riêng tư mặc định và chỉ công khai khi bạn đồng ý. Biểu mẫu và email không phải kênh phản hồi khẩn cấp; số điện thoại giáo xứ chưa được xác nhận công khai." },
     word: { liturgy: "Phụng vụ", daily: "Hằng ngày", sunday: "Chúa nhật", dailyTitle: "Suy niệm hằng ngày", sundayTitle: "Suy niệm Chúa nhật", color: "Màu", gospel: "Tin Mừng", note: "Bài đọc đầy đủ và bản văn phụng vụ: xem trên các nguồn phụng vụ chính thức của Giáo phận. Trang này đăng suy niệm do quý cha giáo xứ biên soạn.", prayers: "Kinh nguyện", prayersTitle: "Kinh nguyện Công giáo", prayersDescription: "Danh mục kinh thông dụng để cầu nguyện cá nhân và gia đình. Bản văn đầy đủ sẽ được bổ sung dần.", commonPrayer: "Kinh thông dụng", confessionPrayer: "Chuẩn bị xưng tội", soulsPrayer: "Cầu cho các linh hồn", seasonalPrayer: "Theo mùa", familyPrayer: "Cầu nguyện gia đình" },
   },
 } as const;

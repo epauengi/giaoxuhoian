@@ -22,7 +22,7 @@ export function BieuMauForm({ defaultChuDe }: { defaultChuDe?: string; locale?: 
   if (status === "ok") return <div role="status" className="border-2 border-ink bg-neutral-100 p-6"><p className="font-serif text-2xl font-bold">{d.received}</p><p className="mt-2 font-body text-sm leading-relaxed text-neutral-600">{d.thanks}</p><Button variant="secondary" className="mt-4" onClick={() => setStatus("idle")}>{d.another}</Button></div>;
   return <form onSubmit={onSubmit} className="relative space-y-5">
     <div aria-hidden className="absolute left-[-9999px]"><label>{d.honeypot}<input type="text" name="website" tabIndex={-1} autoComplete="off" /></label></div>
-    <div className="grid grid-cols-1 gap-5 sm:grid-cols-2"><Field label={d.name} required><Input name="hoTen" required autoComplete="name" /></Field><Field label={d.contact}><Input name="lienHe" autoComplete="email" /></Field></div>
+    <div className="grid grid-cols-1 gap-5 sm:grid-cols-2"><Field label={d.name} required><Input name="hoTen" required autoComplete="name" /></Field><Field label={d.contact}><Input name="lienHe" type="email" autoComplete="email" /></Field></div>
     <Field label={d.topic} required><Select name="chuDe" required defaultValue={defaultChuDe ?? ""}><option value="" disabled>{d.choose}</option>{d.topics.map(([value, label]) => <option key={value} value={value}>{label}</option>)}</Select></Field>
     <Field label={d.content} required><Textarea name="noiDung" required maxLength={5000} /></Field>
     <label className="flex items-start gap-2 font-body text-sm text-neutral-600"><input type="checkbox" name="riengTu" value="1" className="mt-1 h-5 w-5 shrink-0 accent-ink" />{d.privacy}</label>
