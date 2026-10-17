@@ -55,8 +55,8 @@ export default async function LienHePage({
             <ul className="space-y-4">
               {[
                 { icon: MapPin, label: p.address, value: GIAO_XU.diaChi },
-                { icon: Phone, label: p.phone, value: `${GIAO_XU.dienThoai} (${p.office})` },
-                { icon: Mail, label: p.email, value: GIAO_XU.email },
+                ...(GIAO_XU.dienThoai ? [{ icon: Phone, label: p.phone, value: `${GIAO_XU.dienThoai} (${p.office})` }] : []),
+                ...(GIAO_XU.email ? [{ icon: Mail, label: p.email, value: GIAO_XU.email }] : []),
               ].map(({ icon: Icon, label, value }) => (
                 <li key={label} className="flex gap-3 border-b border-muted pb-3">
                   <span className="flex h-12 w-12 shrink-0 items-center justify-center border border-ink">
@@ -70,21 +70,15 @@ export default async function LienHePage({
                   </div>
                 </li>
               ))}
-              <li className="flex gap-3">
+              {GIAO_XU.gioVanPhong.length > 0 && <li className="flex gap-3">
                 <span className="flex h-12 w-12 shrink-0 items-center justify-center border border-ink">
                   <Clock className="h-6 w-6" strokeWidth={1.5} />
                 </span>
                 <div>
-                  <p className="font-sans text-xs font-bold uppercase tracking-widest text-neutral-500">
-                    {p.officeHours}
-                  </p>
-                  {GIAO_XU.gioVanPhong.map((g) => (
-                    <p key={g.buoi} className="font-body text-sm leading-relaxed">
-                      {g.buoi}: {g.thoiGian}
-                    </p>
-                  ))}
+                  <p className="font-sans text-xs font-bold uppercase tracking-widest text-neutral-500">{p.officeHours}</p>
+                  {GIAO_XU.gioVanPhong.map((g) => <p key={g.buoi} className="font-body text-sm leading-relaxed">{g.buoi}: {g.thoiGian}</p>)}
                 </div>
-              </li>
+              </li>}
             </ul>
             <p className="mt-4 font-mono text-xs uppercase tracking-widest text-neutral-500">
               {p.template}
@@ -96,7 +90,7 @@ export default async function LienHePage({
             <div className="relative h-72 border border-ink sm:h-96">
               <iframe
                 title={p.mapTitle}
-                src="https://www.google.com/maps?q=Nh%C3%A0%20th%E1%BB%9D%20Gi%C3%A1o%20x%E1%BB%A9%20H%E1%BB%99i%20An%2C%20106%20Nguy%E1%BB%85n%20Tr%C6%B0%E1%BB%9Dng%20T%E1%BB%99%2C%20H%E1%BB%99i%20An&output=embed"
+                src="https://www.google.com/maps?q=02%20Nguy%E1%BB%85n%20Tr%C6%B0%E1%BB%9Dng%20T%E1%BB%99%2C%20H%E1%BB%99i%20An&output=embed"
                 className="absolute inset-0 h-full w-full"
                 style={{ border: 0 }}
                 loading="lazy"

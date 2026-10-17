@@ -26,20 +26,13 @@ export default async function LichSuPage({ params }: { params: Promise<{ locale:
           <div className="grid grid-cols-1 gap-8 lg:grid-cols-12">
             <div className="lg:col-span-7">
               <p className="drop-cap font-body text-base leading-relaxed text-neutral-600">
-                Hội An — thương cảng quốc tế sầm uất bậc nhất Đàng Trong trong các thế kỷ
-                XVI–XVIII — là nơi gặp gỡ của thương nhân Nhật Bản, Trung Hoa, Bồ Đào Nha, Hà
-                Lan và cũng là một trong những điểm đến sớm nhất của các thừa sai phương Tây.
-                Hạt giống Tin Mừng được gieo trên vùng đất này từ đầu thế kỷ XVII, và cộng đoàn
-                tín hữu Hội An đã bền bỉ lớn lên qua bao biến cố của lịch sử.
+                Theo lược sử do Giáo phận Đà Nẵng công bố, ngày 18 tháng 1 năm 1615, phái đoàn Dòng Tên do cha Francesco Buzomi dẫn đầu đến Cửa Hàn rồi đến Hội An. Cộng đoàn đức tin tại đây phát triển qua nhiều thế kỷ, giữa những giai đoạn thăng trầm và bách hại.
               </p>
               <p className="mt-4 font-body text-base leading-relaxed text-neutral-600">
-                Gần Hội An, Dinh trấn Thanh Chiêm được các nhà nghiên cứu xem là cái nôi của
-                chữ Quốc ngữ — nơi cha Francisco de Pina và các thừa sai Dòng Tên khởi sự dùng
-                mẫu tự Latinh để ghi âm tiếng Việt. Đức tin và văn hóa đã gặp nhau trên vùng
-                đất này theo cách rất riêng.
+                Cha Francisco de Pina đến Đàng Trong năm 1617; năm 1672, Đức cha Lambert de la Motte tổ chức Công nghị tại Hội An. Những chi tiết về chữ Quốc ngữ và vai trò của từng địa điểm cần được trình bày theo nguồn sử liệu chuyên môn, không gộp thành một khẳng định đơn giản.
               </p>
               <p className="mt-4 font-mono text-xs uppercase tracking-widest text-neutral-500">
-                {p.template}
+                Nguồn: Lược sử Giáo xứ Hội An, Giáo phận Đà Nẵng (2023). Một số mốc lịch sử cần đối chiếu thêm tư liệu lưu trữ.
               </p>
             </div>
             <div className="lg:col-span-5">
@@ -76,10 +69,7 @@ export default async function LichSuPage({ params }: { params: Promise<{ locale:
           <div className="lg:col-span-5">
             <SectionHeader label={p.heritage} title={p.heritageTitle} />
             <p className="font-body text-base leading-relaxed text-neutral-600">
-              Câu chuyện truyền giáo tại Hội An không tách rời câu chuyện giao lưu văn hóa
-              Đông–Tây: từ những trang từ vựng Việt–Bồ–La đầu tiên đến ngôi nhà thờ giữa lòng
-              phố cổ hôm nay. Giáo xứ mong muốn gìn giữ và kể lại di sản ấy cho thế hệ trẻ và
-              du khách gần xa.
+              Năm 2015, Giáo xứ Hội An mừng 400 năm Tin Mừng đến Hội An. Lược sử Giáo phận Đà Nẵng ghi nhận nhà thờ bằng gạch đá được xây dựng năm 1935; nhà thờ hiện nay được xây lại năm 1965 trên nền cũ.
             </p>
           </div>
           <div className="lg:col-span-7">

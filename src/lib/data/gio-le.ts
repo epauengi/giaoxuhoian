@@ -1,4 +1,4 @@
-/** Giờ lễ Giáo xứ Hội An — 106 Nguyễn Trường Tộ, Hội An, Đà Nẵng, Việt Nam */
+/** Giờ lễ tham chiếu danh bạ Giáo phận Đà Nẵng — địa chỉ 02 Nguyễn Trường Tộ. */
 
 export interface GioLe {
   ngay: string;
@@ -14,13 +14,13 @@ export const GIO_LE_THUONG_KY: GioLe[] = [
   },
   {
     ngay: "Thứ Bảy",
-    gio: ["05:00", "17:30"],
-    ghiChu: "Lễ 17:30 là lễ vọng Chúa nhật",
+    gio: ["17:30"],
+    ghiChu: "Lễ Chúa nhật vọng",
   },
   {
     ngay: "Chúa nhật",
     gio: ["05:30", "09:00", "16:00", "18:30"],
-    ghiChu: "Thánh lễ 16:00 bằng tiếng Anh",
+    ghiChu: "Giờ lễ theo danh bạ Giáo phận Đà Nẵng.",
   },
 ];
 
@@ -75,8 +75,7 @@ const ALL_WEEKLY_MASSES: MassSlot[] = [
       },
     ];
   }),
-  // Thứ Bảy
-  { dayOfWeek: 6, time: "05:00", minutes: 5 * 60, note: "Lễ sáng", dayLabel: "Thứ Bảy" },
+  // Danh bạ Giáo phận công bố giờ lễ vọng Chúa nhật; giờ sáng cần xác nhận.
   { dayOfWeek: 6, time: "17:30", minutes: 17 * 60 + 30, note: "Lễ vọng Chúa nhật", dayLabel: "Thứ Bảy" },
   // Chúa nhật
   { dayOfWeek: 0, time: "05:30", minutes: 5 * 60 + 30, note: "Lễ sáng sớm", dayLabel: "Chúa nhật" },

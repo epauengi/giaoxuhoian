@@ -1,57 +1,34 @@
-/** DỮ LIỆU MẪU — cần giáo xứ xác nhận trước khi xuất bản (PRODUCT.md §19) */
-
-export const GIAO_XU = {
-  boNang: "Đức Mẹ Hồn Xác Lên Trời",
+/** Dữ kiện công khai đối chiếu từ danh bạ và lược sử Giáo phận Đà Nẵng.
+ * Thông tin không có xác nhận công khai được để trống, không suy đoán.
+ */
+export const GIAO_XU: {
+  boNang: string; giaoHat: string; giaoPhan: string; diaChi: string;
+  dienThoai: string; email: string; gioVanPhong: { buoi: string; thoiGian: string }[]; gioiThieu: string;
+} = {
+  boNang: "Thánh Tâm Chúa Giêsu",
   giaoHat: "Hội An",
   giaoPhan: "Đà Nẵng",
-  diaChi: "106 Nguyễn Trường Tộ, Hội An, Đà Nẵng, Việt Nam",
-  dienThoai: "0344 788 513",
-  email: "giaoxuhoian0706@gmail.com",
-  gioVanPhong: [
-    { buoi: "Sáng", thoiGian: "08:00 – 11:00 (Thứ Hai – Thứ Bảy)" },
-    { buoi: "Chiều", thoiGian: "14:00 – 17:00 (Thứ Hai – Thứ Sáu)" },
-  ],
+  diaChi: "02 Nguyễn Trường Tộ, Hội An",
+  dienThoai: "",
+  email: "",
+  gioVanPhong: [],
   gioiThieu:
-    "Giáo xứ Hội An tọa lạc giữa lòng phố cổ — thương cảng quốc tế sầm uất bậc nhất Đàng Trong thế kỷ XVI–XVIII. Đây là một trong những cái nôi sớm nhất của hạt giống Tin Mừng tại Việt Nam, nơi các thừa sai Dòng Tên đặt chân và khởi sự công cuộc truyền giáo, gắn liền với sự hình thành chữ Quốc ngữ.",
+    "Giáo xứ Hội An thuộc Giáo hạt Hội An, Giáo phận Đà Nẵng. Cộng đoàn Công giáo tại Hội An gắn với buổi đầu truyền giáo ở Đàng Trong; nhà thờ hiện nay được xây dựng năm 1965 trên nền nhà thờ năm 1935.",
 };
 
 export const CHA_XU = [
-  {
-    hoTen: "Cha Phêrô Nguyễn Văn A",
-    vaiTro: "Chánh xứ",
-    nhiemKy: "2022 – nay",
-    ghiChu: "Mọi liên hệ qua văn phòng giáo xứ",
-  },
-  {
-    hoTen: "Cha Phaolô Trần Văn B",
-    vaiTro: "Phó xứ",
-    nhiemKy: "2024 – nay",
-    ghiChu: "Phụ trách giới trẻ và giáo lý",
-  },
+  { hoTen: "Lm. Giuse Nguyễn Văn Thú", vaiTro: "Quản xứ", nhiemKy: "Nhận xứ năm 2020", ghiChu: "Theo danh bạ Giáo phận Đà Nẵng; cần đối chiếu trước khi xuất bản lâu dài." },
 ];
 
-export const HOI_DONG_MUC_VU = [
-  { hoTen: "Ông Gioan Baotixita Lê Văn C", vaiTro: "Chủ tịch HĐMV" },
-  { hoTen: "Ông Đaminh Phạm Văn D", vaiTro: "Phó nội vụ" },
-  { hoTen: "Bà Maria Trần Thị E", vaiTro: "Phó ngoại vụ" },
-  { hoTen: "Ông Phêrô Võ Văn F", vaiTro: "Thư ký" },
-  { hoTen: "Bà Anna Nguyễn Thị G", vaiTro: "Thủ quỹ" },
-];
-
-export const GIAO_KHU = [
-  { ten: "Giáo khu Thánh Giuse", khuVuc: "Phường Minh An", boNang: "Thánh Giuse (19.03)" },
-  { ten: "Giáo khu Mân Côi", khuVuc: "Phường Cẩm Phô", boNang: "Đức Mẹ Mân Côi (07.10)" },
-  { ten: "Giáo khu Anrê", khuVuc: "Phường Tân An", boNang: "Thánh Anrê (30.11)" },
-  { ten: "Giáo khu Phaolô", khuVuc: "Xã Cẩm Kim", boNang: "Thánh Phaolô trở lại (25.01)" },
-];
+export const HOI_DONG_MUC_VU: { hoTen: string; vaiTro: string }[] = [];
+export const GIAO_KHU: { ten: string; khuVuc: string; boNang: string }[] = [];
 
 export const DONG_THOI_GIAN = [
-  { nam: "1615", suKien: "Các thừa sai Dòng Tên đến Đàng Trong, khởi sự truyền giáo tại vùng Hội An." },
-  { nam: "1617–1625", suKien: "Cha Francisco de Pina cư trú và giảng đạo tại Hội An; khởi đầu việc dùng chữ Latinh ghi âm tiếng Việt." },
-  { nam: "1631", suKien: "Dinh trấn Thanh Chiêm — trung tâm truyền giáo và cái nôi chữ Quốc ngữ gần Hội An." },
-  { nam: "Thế kỷ 18", suKien: "Cộng đoàn tín hữu Hội An hình thành bền vững giữa thương cảng quốc tế." },
-  { nam: "1885", suKien: "Nhà thờ Hội An được xây dựng, trở thành trung tâm sinh hoạt của giáo xứ." },
-  { nam: "1965", suKien: "Nhà thờ được trùng tu và mở rộng sau biến cố chiến tranh." },
-  { nam: "1999", suKien: "Phố cổ Hội An được UNESCO công nhận Di sản Văn hóa Thế giới; nhà thờ là điểm đến tâm linh giữa lòng phố cổ." },
-  { nam: "2026", suKien: "Giáo xứ tiếp tục trùng tu khuôn viên và đẩy mạnh mục vụ du khách." },
+  { nam: "18.01.1615", suKien: "Phái đoàn Dòng Tên do cha Francesco Buzomi dẫn đầu đến Cửa Hàn, sau đó đến Hội An truyền giáo." },
+  { nam: "1617", suKien: "Cha Francisco de Pina đến Đàng Trong và hoạt động truyền giáo tại vùng Hội An." },
+  { nam: "1672", suKien: "Đức cha Lambert de la Motte tổ chức Công nghị tại Hội An." },
+  { nam: "1935", suKien: "Cố Pierre Auguste Gallioz xây nhà thờ Hội An bằng gạch đá; giáo xứ ghi nhận đây là năm thành lập." },
+  { nam: "1965", suKien: "Cha Giuse Lê Văn Ly xây nhà thờ mới trên nền nhà thờ năm 1935." },
+  { nam: "2015", suKien: "Giáo xứ mừng 400 năm Tin Mừng đến Hội An." },
+  { nam: "2020", suKien: "Cha Giuse Nguyễn Văn Thú nhận xứ theo lược sử/danh bạ Giáo phận Đà Nẵng." },
 ];

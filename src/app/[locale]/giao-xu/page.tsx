@@ -40,12 +40,12 @@ export default async function GiaoXuPage({ params }: { params: Promise<{ locale:
             </h2>
             <dl className="space-y-3">
               {[
-                [p.patron, `${GIAO_XU.boNang} (15.08)`],
+                [p.patron, GIAO_XU.boNang],
                 [p.deanery, GIAO_XU.giaoHat],
                 [p.diocese, GIAO_XU.giaoPhan],
                 [p.address, GIAO_XU.diaChi],
-                [p.phone, GIAO_XU.dienThoai],
-                [p.email, GIAO_XU.email],
+                ...(GIAO_XU.dienThoai ? [[p.phone, GIAO_XU.dienThoai]] : []),
+                ...(GIAO_XU.email ? [[p.email, GIAO_XU.email]] : []),
               ].map(([k, v]) => (
                 <div key={k} className="border-b border-muted pb-2">
                   <dt className="font-mono text-xs uppercase tracking-widest text-neutral-500">{k}</dt>
@@ -54,7 +54,7 @@ export default async function GiaoXuPage({ params }: { params: Promise<{ locale:
               ))}
             </dl>
             <p className="mt-3 font-mono text-xs uppercase tracking-widest text-neutral-500">
-              {p.template}
+              Thông tin nhân sự, điện thoại, email, giờ văn phòng và giáo khu: đang chờ giáo xứ xác nhận.
             </p>
           </aside>
         </div>
@@ -134,14 +134,14 @@ export default async function GiaoXuPage({ params }: { params: Promise<{ locale:
         <div className="mx-auto grid max-w-screen-xl grid-cols-1 gap-8 px-4 py-12 sm:py-16 lg:grid-cols-12">
           <div className="lg:col-span-5">
             <SectionHeader label={p.office} title={p.officeHours} />
-            <dl className="space-y-3">
+            {GIAO_XU.gioVanPhong.length ? <dl className="space-y-3">
               {GIAO_XU.gioVanPhong.map((g) => (
                 <div key={g.buoi} className="flex items-baseline justify-between border-b border-muted pb-2">
                   <dt className="font-sans text-xs font-bold uppercase tracking-widest">{g.buoi}</dt>
                   <dd className="font-mono text-sm">{g.thoiGian}</dd>
                 </div>
               ))}
-            </dl>
+            </dl> : <p className="font-body text-sm text-neutral-600">Giờ văn phòng đang chờ giáo xứ xác nhận.</p>}
             <p className="mt-4 font-body text-sm leading-relaxed text-neutral-600">
               {p.officeSupport}
             </p>

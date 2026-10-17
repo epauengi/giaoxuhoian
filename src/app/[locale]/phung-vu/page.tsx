@@ -10,7 +10,6 @@ import {
   GIO_LE_THUONG_KY,
   GIO_LE_DAC_BIET,
   GIAI_TOI_CHAU_THANH,
-  NGAY_CAP_NHAT_GIO_LE,
 } from "@/lib/data/gio-le";
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
@@ -44,7 +43,7 @@ export default async function PhungVuPage({ params }: { params: Promise<{ locale
         <div className="mx-auto max-w-screen-xl px-4 py-12">
           <div className="mb-6 flex flex-wrap items-center justify-between gap-2">
             <h2 className="font-serif text-3xl font-bold">{p.regular}</h2>
-            <Badge variant="solid">{p.confirmed} · {NGAY_CAP_NHAT_GIO_LE}</Badge>
+            <Badge variant="outline">Theo danh bạ Giáo phận Đà Nẵng · kiểm tra trước khi đi</Badge>
           </div>
           <div className="overflow-x-auto border border-ink">
             <table className="w-full border-collapse text-left">
@@ -73,7 +72,7 @@ export default async function PhungVuPage({ params }: { params: Promise<{ locale
             </table>
           </div>
           <p className="mt-3 font-mono text-xs uppercase tracking-widest text-neutral-500">
-            {p.template}
+            Giờ lễ thường kỳ đối chiếu danh bạ Giáo phận Đà Nẵng; lịch lễ đặc biệt, giải tội và chầu đang chờ giáo xứ xác nhận.
           </p>
         </div>
       </section>
