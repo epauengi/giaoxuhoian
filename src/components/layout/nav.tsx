@@ -5,15 +5,16 @@ import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
+import type { Locale } from "@/lib/i18n/config";
 import { getDictionary } from "@/lib/i18n/dictionaries";
 import { isNavItemActive } from "@/lib/i18n/routing";
 
-export function Nav() {
+export function Nav({ locale = "vi" }: { locale?: Locale } = {}) {
   const pathname = usePathname() || "/";
   const [open, setOpen] = useState(false);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
   const firstLinkRef = useRef<HTMLAnchorElement>(null);
-  const dict = getDictionary();
+  const dict = getDictionary(locale);
   const navItems = [
     { href: "/", label: dict.nav.home },
     { href: "/giao-xu", label: dict.nav.parish },

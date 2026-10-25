@@ -1,3 +1,4 @@
+import type { Locale } from "@/lib/i18n/config";
 import Link from "next/link";
 import { SectionHeader } from "@/components/ui/section-header";
 import { ArticleCard } from "@/components/blocks/article-card";
@@ -11,11 +12,11 @@ export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
-  const locale = "vi" as const;
+  const locale = (await params).locale as Locale;
   return localizedPageMetadata(
     locale,
-    "Tin tức & Sự kiện",
-    "Thông báo mục vụ, tin sinh hoạt, cáo phó và rao hôn phối của Giáo xứ Hội An.",
+    locale === "en" ? "News & Events" : "Tin tức & Sự kiện",
+    locale === "en" ? "Pastoral announcements, parish activities, obituaries and marriage banns from Hoi An Parish." : "Thông báo mục vụ, tin sinh hoạt, cáo phó và rao hôn phối của Giáo xứ Hội An.",
     "/tin-tuc",
   );
 }
@@ -29,7 +30,7 @@ export default async function TinTucPage({
   searchParams: Promise<{ loai?: string }>;
   params: Promise<{ locale: string }>;
 }) {
-  const locale = "vi" as const;
+  const locale = (await params).locale as Locale;
   await params;
   const { loai } = await searchParams;
   const active = loai && FILTERS.includes(loai) ? loai : null;
@@ -44,7 +45,7 @@ export default async function TinTucPage({
         <div className="mx-auto max-w-screen-xl px-4 py-12 sm:py-16">
           <SectionHeader label={page.label} title={page.title} as="h1" />
           <p className="max-w-2xl font-body text-base leading-relaxed text-neutral-600">
-            {page.description} Suy niệm Lời Chúa tại
+            {page.description} {locale === "en" ? "Read Scripture reflections on the" : "Suy niệm Lời Chúa tại"}{" "}
             <Link href={path("/loi-chua")} className="underline decoration-accent decoration-2 underline-offset-4">{page.wordLink}</Link>.
           </p>
         </div>

@@ -1,3 +1,4 @@
+import type { Locale } from "@/lib/i18n/config";
 import { SectionHeader } from "@/components/ui/section-header";
 import { Ornament } from "@/components/ui/ornament";
 import { Badge } from "@/components/ui/badge";
@@ -6,28 +7,36 @@ import { DOAN_THE, KHOA_GIAO_LY } from "@/lib/data/doan-the";
 import { localePath } from "@/lib/i18n/routing";
 import { getDictionary } from "@/lib/i18n/dictionaries";
 import { localizedPageMetadata } from "@/lib/seo";
+import { localize } from "@/lib/i18n/content";
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
-  const locale = "vi" as const;
+  const locale = (await params).locale as Locale;
   return localizedPageMetadata(
     locale,
-    "Cộng đoàn & Giáo lý",
-    "Các đoàn thể và khóa giáo lý của Giáo xứ Hội An: Thiếu nhi Thánh Thể, Giới trẻ, Ca đoàn, Caritas và các lớp giáo lý.",
+    locale === "en" ? "Community & Catechism" : "Cộng đoàn & Giáo lý",
+    locale === "en"
+      ? "Parish associations and catechism courses of Hoi An Parish: Eucharistic Youth Movement, Youth Ministry, Choir, Caritas, and catechism classes."
+      : "Các đoàn thể và khóa giáo lý của Giáo xứ Hội An: Thiếu nhi Thánh Thể, Giới trẻ, Ca đoàn, Caritas và các lớp giáo lý.",
     "/cong-doan",
   );
 }
 
 export default async function CongDoanPage({ params }: { params: Promise<{ locale: string }> }) {
-  const locale = "vi" as const;
+  const locale = (await params).locale as Locale;
   const p = getDictionary(locale).page.community;
   const path = (href: string) => localePath(locale, href);
+  const doanThe = localize(locale, DOAN_THE);
+  const khoaGiaoLy = localize(locale, KHOA_GIAO_LY);
+
   return (
     <>
       <section className="newsprint-texture border-b border-ink">
         <div className="mx-auto max-w-screen-xl px-4 py-12 sm:py-16">
           <SectionHeader label={p.label} title={p.title} as="h1" />
           <p className="max-w-2xl font-body text-base leading-relaxed text-neutral-600">
-            Đời sống giáo xứ được nuôi dưỡng bởi các đoàn thể và chương trình giáo lý. Mỗi nhóm có lịch sinh hoạt và người phụ trách riêng — liên hệ văn phòng để tham gia.
+            {locale === "en"
+              ? "Parish life is nurtured by associations and catechism programs. Each group has its own activity schedule and coordinator — contact the parish office to join."
+              : "Đời sống giáo xứ được nuôi dưỡng bởi các đoàn thể và chương trình giáo lý. Mỗi nhóm có lịch sinh hoạt và người phụ trách riêng — liên hệ văn phòng để tham gia."}
           </p>
         </div>
       </section>
@@ -37,7 +46,7 @@ export default async function CongDoanPage({ params }: { params: Promise<{ local
         <div className="mx-auto max-w-screen-xl px-4 py-12">
           <h2 className="mb-6 font-serif text-3xl font-bold">{p.organizations}</h2>
           <div className="grid grid-cols-1 border-l border-t border-ink md:grid-cols-2 lg:grid-cols-3">
-            {DOAN_THE.map((dt) => (
+            {doanThe.map((dt) => (
               <div key={dt.slug} className="border-b border-r border-ink p-6">
                 <p className="font-serif text-2xl font-bold">{dt.ten}</p>
                 {dt.boNang && (
@@ -71,30 +80,36 @@ export default async function CongDoanPage({ params }: { params: Promise<{ local
         <div className="mx-auto max-w-screen-xl px-4 py-16">
           <SectionHeader label={p.catechism} title={p.courses} invert />
           <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-            {KHOA_GIAO_LY.map((k) => (
-              <div key={k.slug} className="border border-paper p-6">
-                <div className="flex items-start justify-between gap-2">
-                  <h3 className="font-serif text-2xl font-bold">{k.ten}</h3>
-                  <Badge variant={k.trangThai === "Dang mở" ? "accent" : "outline"} className={k.trangThai !== "Dang mở" ? "border-paper text-paper" : ""}>
-                    {k.trangThai}
-                  </Badge>
+            {khoaGiaoLy.map((k) => {
+              const isOpen = KHOA_GIAO_LY.find((course) => course.slug === k.slug)?.trangThai === "Dang mở";
+              return (
+                <div key={k.slug} className="border border-paper p-6">
+                  <div className="flex items-start justify-between gap-2">
+                    <h3 className="font-serif text-2xl font-bold">{k.ten}</h3>
+                    <Badge
+                      variant={isOpen ? "accent" : "outline"}
+                      className={!isOpen ? "border-paper text-paper" : ""}
+                    >
+                      {k.trangThai}
+                    </Badge>
+                  </div>
+                  <dl className="mt-4 space-y-2 font-body text-sm text-neutral-400">
+                    <div>
+                      <dt className="font-mono text-xs uppercase tracking-widest">{p.audience}</dt>
+                      <dd>{k.doiTuong}</dd>
+                    </div>
+                    <div>
+                      <dt className="font-mono text-xs uppercase tracking-widest">{p.schedule}</dt>
+                      <dd>{k.lichHoc}</dd>
+                    </div>
+                    <div>
+                      <dt className="font-mono text-xs uppercase tracking-widest">{p.registration}</dt>
+                      <dd>{k.thoiGianDangKy}</dd>
+                    </div>
+                  </dl>
                 </div>
-                <dl className="mt-4 space-y-2 font-body text-sm text-neutral-400">
-                  <div>
-                    <dt className="font-mono text-xs uppercase tracking-widest">{p.audience}</dt>
-                    <dd>{k.doiTuong}</dd>
-                  </div>
-                  <div>
-                    <dt className="font-mono text-xs uppercase tracking-widest">{p.schedule}</dt>
-                    <dd>{k.lichHoc}</dd>
-                  </div>
-                  <div>
-                    <dt className="font-mono text-xs uppercase tracking-widest">{p.registration}</dt>
-                    <dd>{k.thoiGianDangKy}</dd>
-                  </div>
-                </dl>
-              </div>
-            ))}
+              );
+            })}
           </div>
           <div className="mt-8">
             <ButtonLink href={path("/lien-he?chu-de=giao-ly")} variant="secondary" className="border-paper text-paper hover:bg-paper hover:text-ink">

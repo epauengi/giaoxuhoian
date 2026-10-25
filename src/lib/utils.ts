@@ -6,8 +6,8 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export function formatDateLocale(date: Date, _locale: Locale = "vi"): string {
-  return new Intl.DateTimeFormat("vi-VN", { dateStyle: "medium" }).format(date);
+export function formatDateLocale(date: Date, locale: Locale = "vi"): string {
+  return new Intl.DateTimeFormat(locale === "en" ? "en-US" : "vi-VN", { dateStyle: "medium" }).format(date);
 }
 
 export function formatVi(date: Date): string {

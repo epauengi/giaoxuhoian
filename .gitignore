@@ -47,4 +47,5 @@ CLAUDE.md
 PRODUCT.md
 /.claude/
 /.impeccable/
-scripts/
+scripts/*
+!scripts/check-i18n.ts

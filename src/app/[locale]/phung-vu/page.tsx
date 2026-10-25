@@ -1,3 +1,4 @@
+import type { Locale } from "@/lib/i18n/config";
 import Link from "next/link";
 import { SectionHeader } from "@/components/ui/section-header";
 import { Ornament } from "@/components/ui/ornament";
@@ -11,29 +12,48 @@ import {
   GIO_LE_DAC_BIET,
   GIAI_TOI_CHAU_THANH,
 } from "@/lib/data/gio-le";
+import { localize } from "@/lib/i18n/content";
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
-  const locale = "vi" as const;
+  const locale = (await params).locale as Locale;
+  const isEn = locale === "en";
   return localizedPageMetadata(
     locale,
-    "Phụng vụ & Bí tích",
-    "Giờ lễ thường kỳ, lịch lễ đặc biệt, giờ giải tội, chầu Thánh Thể và hướng dẫn các Bí tích của Giáo xứ Hội An.",
+    isEn ? "Liturgy & Sacraments" : "Phụng vụ & Bí tích",
+    isEn
+      ? "Regular mass schedule, special feast days, confession times, Eucharistic adoration, and sacramental guidelines at Hoi An Parish."
+      : "Giờ lễ thường kỳ, lịch lễ đặc biệt, giờ giải tội, chầu Thánh Thể và hướng dẫn các Bí tích của Giáo xứ Hội An.",
     "/phung-vu",
   );
 }
 
 export default async function PhungVuPage({ params }: { params: Promise<{ locale: string }> }) {
-  const locale = "vi" as const;
+  const locale = (await params).locale as Locale;
+  const isEn = locale === "en";
   const p = getDictionary(locale).page.liturgy;
   const path = (href: string) => localePath(locale, href);
+  const regularMasses = localize(locale, GIO_LE_THUONG_KY);
+  const specialMasses = localize(locale, GIO_LE_DAC_BIET);
+  const confessions = localize(locale, GIAI_TOI_CHAU_THANH);
+
+  const sacramentsList = [
+    [isEn ? "Baptism" : "Rửa tội", "rua-toi"],
+    [isEn ? "Confirmation" : "Thêm sức", "them-suc"],
+    [isEn ? "First Holy Communion" : "Rước lễ lần đầu", "ruoc-le-lan-dau"],
+    [isEn ? "Reconciliation" : "Hòa giải", "hoa-giai"],
+    [isEn ? "Matrimony" : "Hôn phối", "hon-phoi"],
+    [isEn ? "Anointing of the Sick" : "Xức dầu bệnh nhân", "xuc-dau-benh-nhan"],
+    [isEn ? "Funeral Rites" : "An táng", "an-tang"],
+    [isEn ? "Sacrament Certificate" : "Chứng nhận Bí tích", "chung-nhan"],
+  ] as const;
+
   return (
     <>
       <section className="newsprint-texture border-b border-ink">
         <div className="mx-auto max-w-screen-xl px-4 py-12 sm:py-16">
           <SectionHeader label={p.label} title={p.title} as="h1" />
           <p className="max-w-2xl font-body text-base leading-relaxed text-neutral-600">
-            Giờ lễ được xác nhận hằng tuần. Nếu có thay đổi đột xuất, giáo xứ sẽ thông báo trên
-            trang chủ và tại nhà thờ.
+            {p.description}
           </p>
         </div>
       </section>
@@ -43,7 +63,9 @@ export default async function PhungVuPage({ params }: { params: Promise<{ locale
         <div className="mx-auto max-w-screen-xl px-4 py-12">
           <div className="mb-6 flex flex-wrap items-center justify-between gap-2">
             <h2 className="font-serif text-3xl font-bold">{p.regular}</h2>
-            <Badge variant="outline">Theo danh bạ Giáo phận Đà Nẵng · kiểm tra trước khi đi</Badge>
+            <Badge variant="outline">
+              {isEn ? "Per Da Nang Diocese directory · please verify before visiting" : "Theo danh bạ Giáo phận Đà Nẵng · kiểm tra trước khi đi"}
+            </Badge>
           </div>
           <div className="overflow-x-auto border border-ink">
             <table className="w-full border-collapse text-left">
@@ -57,7 +79,7 @@ export default async function PhungVuPage({ params }: { params: Promise<{ locale
                 </tr>
               </thead>
               <tbody>
-                {GIO_LE_THUONG_KY.map((g) => (
+                {regularMasses.map((g) => (
                   <tr key={g.ngay} className="border-b border-muted last:border-b-0 hover:bg-neutral-100">
                     <td className="px-4 py-4 font-sans text-sm font-semibold uppercase tracking-wider">
                       {g.ngay}
@@ -72,7 +94,9 @@ export default async function PhungVuPage({ params }: { params: Promise<{ locale
             </table>
           </div>
           <p className="mt-3 font-mono text-xs uppercase tracking-widest text-neutral-500">
-            Giờ lễ thường kỳ đối chiếu danh bạ Giáo phận Đà Nẵng; lịch lễ đặc biệt, giải tội và chầu đang chờ giáo xứ xác nhận.
+            {isEn
+              ? "Regular mass schedule cross-referenced with Diocese of Da Nang directory; special feasts, confession, and adoration schedule pending parish confirmation."
+              : "Giờ lễ thường kỳ đối chiếu danh bạ Giáo phận Đà Nẵng; lịch lễ đặc biệt, giải tội và chầu đang chờ giáo xứ xác nhận."}
           </p>
         </div>
       </section>
@@ -83,7 +107,7 @@ export default async function PhungVuPage({ params }: { params: Promise<{ locale
           <div className="border-b border-ink p-6 sm:p-8 lg:col-span-7 lg:border-b-0 lg:border-r">
             <h2 className="mb-6 font-serif text-3xl font-bold">{p.feasts}</h2>
             <div className="space-y-0 border-t border-ink">
-              {GIO_LE_DAC_BIET.map((d) => (
+              {specialMasses.map((d) => (
                 <div key={d.dip} className="border-b border-muted py-4 last:border-b-0">
                   <p className="font-sans text-sm font-bold uppercase tracking-wider">{d.dip}</p>
                   <ul className="mt-1 space-y-1">
@@ -100,7 +124,7 @@ export default async function PhungVuPage({ params }: { params: Promise<{ locale
           <div className="p-6 sm:p-8 lg:col-span-5">
             <h2 className="mb-6 font-serif text-3xl font-bold">{p.confession}</h2>
             <div className="space-y-4">
-              {GIAI_TOI_CHAU_THANH.map((m) => (
+              {confessions.map((m) => (
                 <div key={m.muc} className="border border-ink p-4">
                   <p className="font-sans text-xs font-bold uppercase tracking-widest">{m.muc}</p>
                   <p className="mt-1 font-body text-sm leading-relaxed">{m.thoiGian}</p>
@@ -119,20 +143,10 @@ export default async function PhungVuPage({ params }: { params: Promise<{ locale
         <div className="mx-auto max-w-screen-xl px-4 py-16">
           <SectionHeader label={p.sacramentsLabel} title={p.sacramentsTitle} invert />
           <p className="max-w-2xl font-body text-base leading-relaxed text-neutral-400">
-            Mỗi Bí tích có điều kiện, hồ sơ và quy trình riêng. Chọn Bí tích bạn quan tâm để xem
-            hướng dẫn chi tiết và đầu mối liên hệ.
+            {p.sacramentsDescription}
           </p>
           <div className="mt-8 grid grid-cols-1 border-l border-t border-paper sm:grid-cols-2 lg:grid-cols-4">
-            {[
-              ["Rửa tội", "rua-toi"],
-              ["Thêm sức", "them-suc"],
-              ["Rước lễ lần đầu", "ruoc-le-lan-dau"],
-              ["Hòa giải", "hoa-giai"],
-              ["Hôn phối", "hon-phoi"],
-              ["Xức dầu bệnh nhân", "xuc-dau-benh-nhan"],
-              ["An táng", "an-tang"],
-              ["Chứng nhận Bí tích", "chung-nhan"],
-            ].map(([ten, slug]) => (
+            {sacramentsList.map(([ten, slug]) => (
               <Link
                 key={slug}
                 href={path(slug === "chung-nhan" ? "/bi-tich#chung-nhan" : `/bi-tich/${slug}`)}

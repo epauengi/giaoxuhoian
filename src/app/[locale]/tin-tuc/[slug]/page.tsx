@@ -1,3 +1,4 @@
+import type { Locale } from "@/lib/i18n/config";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -18,7 +19,7 @@ export async function generateMetadata({
   params: Promise<{ locale: string; slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const locale = "vi" as const;
+  const locale = (await params).locale as Locale;
   const bai = await getPublishedArticleBySlug(locale, "bai-viet", slug);
   if (!bai) return {};
   return localizedMetadata(locale, bai.title, bai.summary, `/tin-tuc/${slug}`);
@@ -26,7 +27,7 @@ export async function generateMetadata({
 
 export default async function BaiVietPage({ params }: { params: Promise<{ locale: string; slug: string }> }) {
   const { slug } = await params;
-  const locale = "vi" as const;
+  const locale = (await params).locale as Locale;
   const bai = await getPublishedArticleBySlug(locale, "bai-viet", slug);
   if (!bai) notFound();
   const d = getDictionary(locale);
@@ -36,14 +37,14 @@ export default async function BaiVietPage({ params }: { params: Promise<{ locale
     <article>
       <header className="newsprint-texture border-b border-ink">
         <div className="mx-auto max-w-screen-xl px-4 py-12 sm:py-16">
-          <nav aria-label="Breadcrumb" className="mb-4 font-mono text-xs uppercase tracking-widest text-neutral-500">
+          <nav aria-label={locale === "en" ? "Breadcrumb" : "Đường dẫn"} className="mb-4 font-mono text-xs uppercase tracking-widest text-neutral-500">
             <Link href={localePath(locale, "/tin-tuc")} className="hover:text-accent">{d.article.news}</Link>
             <span aria-hidden> / </span>
-            <span className="text-ink">{category[bai.category as keyof typeof category] ?? bai.category}</span>
+            <span className="text-ink">{Object.hasOwn(category, bai.category) ? category[bai.category as keyof typeof category] : bai.category}</span>
           </nav>
           <div className="mb-3 flex flex-wrap items-center gap-3">
             <Badge variant={bai.category === "thong-bao" ? "accent" : "outline"}>
-              {category[bai.category as keyof typeof category] ?? bai.category}
+              {Object.hasOwn(category, bai.category) ? category[bai.category as keyof typeof category] : bai.category}
             </Badge>
             <span className="font-mono text-xs uppercase tracking-widest text-neutral-500">
               {formatDate(bai.date, locale)} · {bai.author}
@@ -62,7 +63,10 @@ export default async function BaiVietPage({ params }: { params: Promise<{ locale
         <div className="mx-auto max-w-screen-xl px-4 py-12">
           <div className="grid grid-cols-1 gap-8 lg:grid-cols-12">
             <div className="lg:col-span-8">
-              <div className="prose-newsprint max-w-3xl">
+              {locale === "en" && bai.locale !== "en" && (
+              <p className="mb-6 border border-ink p-4 font-body text-sm">This article is currently available in Vietnamese only.</p>
+            )}
+            <div lang={bai.locale} className="prose-newsprint max-w-3xl">
                 <MDXRemote
                   source={bai.content}
                   options={{ blockJS: true, blockDangerousJS: true, mdxOptions: { format: "md" } }}

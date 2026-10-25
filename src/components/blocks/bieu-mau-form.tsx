@@ -5,9 +5,10 @@ import { Button } from "@/components/ui/button";
 import { Field, Input, Select, Textarea } from "@/components/ui/input";
 import type { Locale } from "@/lib/i18n/config";
 import { getDictionary } from "@/lib/i18n/dictionaries";
+import { translate } from "@/lib/i18n/content";
 
-export function BieuMauForm({ defaultChuDe }: { defaultChuDe?: string; locale?: Locale }) {
-  const d = getDictionary().form;
+export function BieuMauForm({ defaultChuDe, locale = "vi" }: { defaultChuDe?: string; locale?: Locale }) {
+  const d = getDictionary(locale).form;
   const [status, setStatus] = useState<"idle" | "sending" | "ok" | "error">("idle");
   const [error, setError] = useState("");
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -16,7 +17,7 @@ export function BieuMauForm({ defaultChuDe }: { defaultChuDe?: string; locale?: 
       const data = Object.fromEntries(new FormData(form).entries());
       const res = await fetch("/api/gui-bieu-mau", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(data) });
       const json = await res.json();
-      if (json.ok) { setStatus("ok"); form.reset(); } else { setStatus("error"); setError(json.error ?? d.error); }
+      if (json.ok) { setStatus("ok"); form.reset(); } else { setStatus("error"); setError(typeof json.error === "string" ? translate(locale, json.error) : d.error); }
     } catch { setStatus("error"); setError(d.networkError); }
   }
   if (status === "ok") return <div role="status" className="border-2 border-ink bg-neutral-100 p-6"><p className="font-serif text-2xl font-bold">{d.received}</p><p className="mt-2 font-body text-sm leading-relaxed text-neutral-600">{d.thanks}</p><Button variant="secondary" className="mt-4" onClick={() => setStatus("idle")}>{d.another}</Button></div>;

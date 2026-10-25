@@ -2,8 +2,9 @@
 
 import { useEffect, useState } from "react";
 import { getNextMass, NextMassResult } from "@/lib/data/gio-le";
+import { translate } from "@/lib/i18n/content";
 
-export function NextMassBadge({ fallbackDate }: { fallbackDate?: string }) {
+export function NextMassBadge({ fallbackDate, locale = "vi" }: { fallbackDate?: string; locale?: import("@/lib/i18n/config").Locale }) {
   const [nextMass, setNextMass] = useState<NextMassResult | null>(null);
 
   useEffect(() => {
@@ -22,6 +23,7 @@ export function NextMassBadge({ fallbackDate }: { fallbackDate?: string }) {
   const formatCountdown = (diff: number) => {
     const hours = Math.floor(diff / 60);
     const mins = diff % 60;
+    if (locale === "en") return hours === 0 ? `in ${mins} min` : mins === 0 ? `in ${hours} hr` : `in ${hours} hr ${mins} min`;
     if (hours === 0) return `${mins} phút nữa`;
     if (mins === 0) return `${hours} giờ nữa`;
     return `${hours}h ${mins}p nữa`;
@@ -32,7 +34,7 @@ export function NextMassBadge({ fallbackDate }: { fallbackDate?: string }) {
       <div className="flex flex-wrap items-center justify-between gap-1.5">
         <span className="inline-flex items-center gap-2 font-mono text-xs font-bold uppercase tracking-wider text-neutral-300">
           <span className="inline-block h-2 w-2 rounded-full bg-accent" aria-hidden="true" />
-          LỄ KẾ TIẾP
+          {locale === "en" ? "NEXT MASS" : "LỄ KẾ TIẾP"}
         </span>
         <span className="font-mono text-sm font-medium text-paper">
           {formatCountdown(current.diffMinutes)}
@@ -43,12 +45,12 @@ export function NextMassBadge({ fallbackDate }: { fallbackDate?: string }) {
           {current.time}
         </span>
         <span className="font-sans text-xs font-semibold uppercase tracking-wider text-neutral-300">
-          {current.dayLabel}
+          {translate(locale, current.dayLabel)}
         </span>
       </div>
       {current.note && (
         <p className="mt-1.5 font-body text-xs italic text-neutral-300">
-          {current.note}
+          {translate(locale, current.note)}
         </p>
       )}
     </div>

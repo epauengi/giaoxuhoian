@@ -6,10 +6,11 @@ import { Clock, MapPin, HeartHandshake, Cross } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { getDictionary } from "@/lib/i18n/dictionaries";
 import { isNavItemActive } from "@/lib/i18n/routing";
+import type { Locale } from "@/lib/i18n/config";
 
-export function QuickAccessBar() {
+export function QuickAccessBar({ locale = "vi" }: { locale?: Locale } = {}) {
   const pathname = usePathname() || "/";
-  const d = getDictionary();
+  const d = getDictionary(locale);
   const items = [
     ["/phung-vu", d.quick.mass, Clock],
     ["/lien-he?khan-cap=xuc-dau", d.quick.emergency, Cross],

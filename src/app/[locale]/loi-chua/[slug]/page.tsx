@@ -1,3 +1,4 @@
+import type { Locale } from "@/lib/i18n/config";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -9,8 +10,6 @@ import { localePath } from "@/lib/i18n/routing";
 import { getDictionary } from "@/lib/i18n/dictionaries";
 import { localizedMetadata } from "@/lib/seo";
 
-const CATEGORY_LABELS = { sunday: "Suy niệm Chúa nhật", daily: "Suy niệm hằng ngày" } as const;
-
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
@@ -20,7 +19,7 @@ export async function generateMetadata({
   params: Promise<{ locale: string; slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const locale = "vi" as const;
+  const locale = (await params).locale as Locale;
   const bai = await getPublishedArticleBySlug(locale, "suy-niem", slug);
   if (!bai) return {};
   return localizedMetadata(locale, bai.title, bai.summary, `/loi-chua/${slug}`);
@@ -28,11 +27,11 @@ export async function generateMetadata({
 
 export default async function SuyNiemPage({ params }: { params: Promise<{ locale: string; slug: string }> }) {
   const { slug } = await params;
-  const locale = "vi" as const;
+  const locale = (await params).locale as Locale;
   const bai = await getPublishedArticleBySlug(locale, "suy-niem", slug);
   if (!bai) notFound();
   const d = getDictionary(locale);
-  const labels = CATEGORY_LABELS;
+  const category = d.category;
 
   return (
     <article>
@@ -42,7 +41,7 @@ export default async function SuyNiemPage({ params }: { params: Promise<{ locale
             <Link href={localePath(locale, "/loi-chua")} className="hover:text-accent">{d.article.word}</Link>
             <span aria-hidden> / </span>
             <span className="text-ink">
-              {bai.category === "suy-niem-chua-nhat" ? labels.sunday : labels.daily}
+              {Object.hasOwn(category, bai.category) ? category[bai.category as keyof typeof category] : bai.category}
             </span>
           </nav>
           <div className="mb-3 flex flex-wrap items-center gap-3">
@@ -59,7 +58,10 @@ export default async function SuyNiemPage({ params }: { params: Promise<{ locale
 
       <div className="border-b border-ink">
         <div className="mx-auto max-w-screen-xl px-4 py-12">
-          <div className="prose-newsprint max-w-3xl">
+          {locale === "en" && bai.locale !== "en" && (
+            <p className="mb-6 border border-ink p-4 font-body text-sm">This article is currently available in Vietnamese only.</p>
+          )}
+          <div lang={bai.locale} className="prose-newsprint max-w-3xl">
             <MDXRemote
                 source={bai.content}
                 options={{ blockJS: true, blockDangerousJS: true, mdxOptions: { format: "md" } }}

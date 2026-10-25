@@ -5,6 +5,7 @@ import { Article, type ArticleDocument } from "@/models/article";
 import { connectMongo } from "@/lib/mongodb";
 import type { ArticleKind, BaiViet } from "@/lib/article-types";
 import type { Locale } from "@/lib/i18n/config";
+import { localizeArticle } from "@/lib/i18n/articles.en";
 
 const publicFields = "locale kind status title slug category date author tags summary createdAt updatedAt";
 const detailFields = `${publicFields} content`;
@@ -16,9 +17,12 @@ function toDto(article: StoredArticle & { content?: string }): BaiViet {
 
 async function queryPublishedArticles(locale: Locale, kind: ArticleKind, category?: string): Promise<BaiViet[]> {
   await connectMongo();
-  const filter = category ? { locale, kind, status: "published" as const, category } : { locale, kind, status: "published" as const };
-  const articles = await Article.find(filter).select(publicFields).sort({ date: -1, _id: -1 }).lean().exec();
-  return (articles as unknown as StoredArticle[]).map(toDto);
+  const filter = { locale: "vi", kind, status: "published" as const, ...(category ? { category } : {}) };
+  const articles = await Article.find(filter).select(locale === "en" ? detailFields : publicFields).sort({ date: -1, _id: -1 }).lean().exec();
+  return (articles as unknown as StoredArticle[]).map((article) => {
+    const localized = localizeArticle(locale, toDto(article));
+    return { ...localized, content: "" };
+  });
 }
 
 export function getPublishedArticles(locale: Locale, kind: ArticleKind, category?: string): Promise<BaiViet[]> {
@@ -27,8 +31,8 @@ export function getPublishedArticles(locale: Locale, kind: ArticleKind, category
 
 async function queryPublishedArticleBySlug(locale: Locale, kind: ArticleKind, slug: string): Promise<BaiViet | null> {
   await connectMongo();
-  const article = await Article.findOne({ locale, kind, status: "published", slug }).select(detailFields).lean().exec();
-  return article ? toDto(article as unknown as StoredArticle) : null;
+  const article = await Article.findOne({ locale: "vi", kind, status: "published", slug }).select(detailFields).lean().exec();
+  return article ? localizeArticle(locale, toDto(article as unknown as StoredArticle)) : null;
 }
 
 export function getPublishedArticleBySlug(locale: Locale, kind: ArticleKind, slug: string): Promise<BaiViet | null> {

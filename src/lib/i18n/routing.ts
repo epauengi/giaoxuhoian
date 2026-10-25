@@ -1,6 +1,6 @@
 import type { Locale } from "./config";
 
-const LOCALE_PREFIX = /^\/vi(?=\/|$)/;
+const LOCALE_PREFIX = /^\/(?:vi|en)(?=\/|$)/;
 
 export function stripLocale(pathname: string): string {
   const path = pathname || "/";

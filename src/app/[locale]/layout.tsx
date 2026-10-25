@@ -21,11 +21,11 @@ export default async function LocaleLayout({ children, params }: { children: Rea
   return (
     <html lang={value} className={`${playfair.variable} ${sourceSerif.variable} ${inter.variable} ${jetbrains.variable} h-full antialiased`}>
       <body className="flex min-h-full flex-col">
-        <a href="#main-content" className="fixed left-3 top-3 z-[60] -translate-y-24 border-2 border-paper bg-ink px-4 py-3 font-sans text-sm font-bold uppercase tracking-widest text-paper transition-transform focus:translate-y-0">Bỏ qua đến nội dung</a>
-        <Masthead />
+        <a href="#main-content" className="fixed left-3 top-3 z-[60] -translate-y-24 border-2 border-paper bg-ink px-4 py-3 font-sans text-sm font-bold uppercase tracking-widest text-paper transition-transform focus:translate-y-0">{value === "en" ? "Skip to content" : "Bỏ qua đến nội dung"}</a>
+        <Masthead locale={value} />
         <main id="main-content" tabIndex={-1} className="flex-1">{children}</main>
-        <Footer />
-        <QuickAccessBar />
+        <Footer locale={value} />
+        <QuickAccessBar locale={value} />
       </body>
     </html>
   );

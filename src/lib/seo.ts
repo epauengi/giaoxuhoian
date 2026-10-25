@@ -8,13 +8,13 @@ export const siteSeo = {
   description: "Cổng thông tin chính thức của Giáo xứ Hội An: giờ lễ, Bí tích, tin tức, Lời Chúa và sinh hoạt cộng đoàn.",
 } as const;
 
-export function localizedMetadata(_locale: Locale, title: string, description: string = siteSeo.description, path = "/"): Metadata {
-  const url = `${BASE}${localePath("vi", path)}`;
+export function localizedMetadata(locale: Locale, title: string, description: string = siteSeo.description, path = "/"): Metadata {
+  const url = `${BASE}${localePath(locale, path)}`;
   return {
     title,
     description,
     alternates: { canonical: url },
-    openGraph: { title, description, url, locale: "vi_VN" },
+    openGraph: { title, description, url, locale: locale === "en" ? "en_US" : "vi_VN" },
   };
 }
 

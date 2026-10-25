@@ -4,17 +4,19 @@ import { Pause, Play } from "lucide-react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { getDictionary } from "@/lib/i18n/dictionaries";
+import type { Locale } from "@/lib/i18n/config";
 
 export function Ticker({
   items,
+  locale = "vi",
   className,
 }: {
   items: string[];
-  locale?: "vi";
+  locale?: Locale;
   className?: string;
 }) {
   const [paused, setPaused] = useState(false);
-  const { ticker } = getDictionary();
+  const { ticker } = getDictionary(locale);
   const row = (copy = false) => (
     <div aria-hidden={copy || undefined} className={cn("flex shrink-0 items-center", copy && "ticker-copy")}>
       {items.map((item) => (

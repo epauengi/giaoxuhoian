@@ -1,6 +1,10 @@
-export default function Loading() {
+import { cookies } from "next/headers";
+import { LOCALE_COOKIE } from "@/lib/i18n/config";
+
+export default async function Loading() {
+  const isEn = (await cookies()).get(LOCALE_COOKIE)?.value === "en";
   return (
-    <div aria-busy="true" aria-label="Đang tải nội dung" className="animate-pulse motion-reduce:animate-none">
+    <div aria-busy="true" aria-label={isEn ? "Loading content" : "Đang tải nội dung"} className="animate-pulse motion-reduce:animate-none">
       <div className="newsprint-texture border-b border-ink">
         <div className="mx-auto max-w-screen-xl px-4 py-12 sm:py-16">
           <div className="h-3 w-28 bg-neutral-400" />

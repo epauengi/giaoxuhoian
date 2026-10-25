@@ -1,3 +1,5 @@
+import type { Locale } from "@/lib/i18n/config";
+
 export const ARTICLE_KINDS = ["bai-viet", "suy-niem"] as const;
 export type ArticleKind = (typeof ARTICLE_KINDS)[number];
 
@@ -28,7 +30,7 @@ export const CATEGORY_LABELS: Record<string, string> = {
 
 export interface BaiViet {
   id?: string;
-  locale: "vi"
+  locale: Locale;
   kind: ArticleKind;
   status: ArticleStatus;
   title: string;
@@ -53,7 +55,7 @@ export const PUBLIC_ARTICLE_KINDS = {
   "suy-niem": "/loi-chua",
 } as const satisfies Record<ArticleKind, string>;
 
-export function formatDate(iso: string, _locale?: "vi"): string {
+export function formatDate(iso: string, locale: Locale = "vi"): string {
   const date = new Date(`${iso}T00:00:00Z`);
-  return new Intl.DateTimeFormat("vi-VN", { day: "2-digit", month: "2-digit", year: "numeric", timeZone: "UTC" }).format(date);
+  return new Intl.DateTimeFormat(locale === "en" ? "en-US" : "vi-VN", { day: "2-digit", month: "2-digit", year: "numeric", timeZone: "UTC" }).format(date);
 }

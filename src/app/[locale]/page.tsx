@@ -1,3 +1,5 @@
+import type { Locale } from "@/lib/i18n/config";
+import { localize, translate } from "@/lib/i18n/content";
 import Link from "next/link";
 import { ArrowRight, Clock, MapPin, Cross, BookOpen, HeartHandshake, GraduationCap } from "lucide-react";
 import { Ticker } from "@/components/ui/ticker";
@@ -21,8 +23,9 @@ export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
-  const locale = "vi" as const;
-  return localizedMetadata(locale, siteSeo.name);
+  const locale = (await params).locale as Locale;
+  return localizedMetadata(locale, locale === "en" ? "Hoi An Parish" : siteSeo.name,
+    locale === "en" ? "The official Hoi An Parish website: Mass times, sacraments, news, the Word of God and community life." : siteSeo.description);
 }
 
 const QUICK_LINKS = [
@@ -35,7 +38,7 @@ const QUICK_LINKS = [
 ] as const;
 
 export default async function HomePage({ params }: { params: Promise<{ locale: string }> }) {
-  const locale = "vi" as const;
+  const locale = (await params).locale as Locale;
   const path = (href: string) => localePath(locale, href);
   const d = getDictionary(locale);
   const p = d.page.home;
@@ -43,8 +46,9 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
   const baiViet = await getPublishedArticles(locale, "bai-viet");
   const [tinTieuDiem, ...tinMoi] = baiViet.slice(0, 4);
   const suyNiemMoi = (await getPublishedArticles(locale, "suy-niem")).slice(0, 2);
-  const thongBao = thongBaoHieuLuc(homNay);
-  const phungVu = phungVuHomNay(homNay);
+  const thongBao = localize(locale, thongBaoHieuLuc(homNay));
+  const rawLiturgy = phungVuHomNay(homNay);
+  const phungVu = localize(locale, rawLiturgy);
 
   return (
     <>
@@ -58,7 +62,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
         <div className="mx-auto grid max-w-screen-xl grid-cols-1 lg:grid-cols-12">
           <div className="border-b border-ink p-5 sm:p-8 lg:col-span-8 lg:border-b-0 lg:border-r">
             <p className="mb-3 font-mono text-xs uppercase tracking-wider text-neutral-600">
-              {formatDateLocale(homNay)} · {phungVu.mauPhungVu === "Xanh" ? "Mùa Thường niên" : phungVu.mauPhungVu}
+              {formatDateLocale(homNay, locale)} · {rawLiturgy.mauPhungVu === "Xanh" ? translate(locale, "Mùa Thường niên") : phungVu.mauPhungVu}
             </p>
             <h1 className="font-serif text-4xl font-black leading-[1.05] tracking-tight text-ink sm:text-6xl sm:leading-[0.95] sm:tracking-tighter lg:text-8xl">
               {p.heroLead} <span className="sm:block">{p.heroMiddle}</span>{" "}
@@ -78,7 +82,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
 
           {/* Mass times quick column */}
           <aside className="p-5 sm:p-8 lg:col-span-4">
-            <NextMassBadge fallbackDate={homNay.toISOString()} />
+            <NextMassBadge fallbackDate={homNay.toISOString()} locale={locale} />
             <div className="mb-4 flex items-center justify-between border-b-2 border-ink pb-2">
               <h3 className="font-sans text-xs font-bold uppercase tracking-wider">
                 {p.quickMass}
@@ -88,7 +92,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
               </span>
             </div>
             <dl>
-              {GIO_LE_THUONG_KY.map((g) => (
+              {localize(locale, GIO_LE_THUONG_KY).map((g) => (
                 <div key={g.ngay} className="border-b border-muted py-2.5 last:border-b-0 sm:py-3">
                   <dt className="font-sans text-xs font-semibold uppercase tracking-wider text-neutral-600">
                     {g.ngay}
@@ -164,7 +168,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
       <section className="border-b border-ink">
         <div className="mx-auto max-w-screen-xl px-4 py-12 sm:py-16">
           <div className="flex items-end justify-between">
-            <SectionHeader label="Tin tức & Sự kiện" title="Tin giáo xứ" className="mb-0" />
+            <SectionHeader label={translate(locale, "Tin tức & Sự kiện")} title={translate(locale, "Tin giáo xứ")} className="mb-0" />
             <ButtonLink href={path("/tin-tuc")} variant="link" className="hidden sm:inline-flex">
               {p.allNews}
             </ButtonLink>
@@ -200,9 +204,9 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
           <div className="lg:col-span-5">
             <SectionHeader label={p.heritageLabel} title={p.heritageTitle} invert />
             <p className="font-body text-base leading-relaxed text-neutral-400">
-              Từ đầu thế kỷ XVII, các thừa sai Dòng Tên đã đặt chân đến vùng đất này. Dinh trấn
-              Thanh Chiêm gần Hội An được xem là cái nôi của chữ Quốc ngữ. Đức tin được gieo
-              giữa thương cảng quốc tế và lớn lên qua bao thế hệ.
+              {locale === "en"
+                ? "Jesuit missionaries arrived in this region in the early 17th century. Thanh Chiem, near Hoi An, is regarded as a cradle of the Vietnamese romanized script. Faith took root in this international trading port and has grown through generations."
+                : "Từ đầu thế kỷ XVII, các thừa sai Dòng Tên đã đặt chân đến vùng đất này. Dinh trấn Thanh Chiêm gần Hội An được xem là cái nôi của chữ Quốc ngữ. Đức tin được gieo giữa thương cảng quốc tế và lớn lên qua bao thế hệ."}
             </p>
             <ButtonLink href={path("/giao-xu/lich-su")} variant="secondary" className="mt-6 border-paper text-paper hover:bg-paper hover:text-ink">
               {p.readHistory}
@@ -235,7 +239,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
                   <div className="mb-2.5 flex flex-wrap items-center gap-2">
                     <Badge>{bai.category === "suy-niem-chua-nhat" ? p.sunday : p.daily}</Badge>
                     <span className="font-mono text-xs uppercase tracking-wider text-neutral-600">
-                      {formatDate(bai.date)}
+                      {formatDate(bai.date, locale)}
                     </span>
                   </div>
                   <h3 className="font-serif text-xl sm:text-2xl font-bold text-ink group-hover:underline group-focus-within:underline group-hover:decoration-accent group-focus-within:decoration-accent group-hover:decoration-2 group-focus-within:decoration-2 group-hover:underline-offset-4 group-focus-within:underline-offset-4">{bai.title}</h3>

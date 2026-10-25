@@ -5,17 +5,17 @@ import type { Locale } from "@/lib/i18n/config";
 import { getDictionary } from "@/lib/i18n/dictionaries";
 import { formatDate } from "@/lib/article-types";
 
-export function ArticleCard({ bai, href, featured = false }: { bai: BaiViet; href: string; featured?: boolean; locale?: Locale }) {
-  const category = getDictionary().category;
+export function ArticleCard({ bai, href, featured = false, locale = "vi" }: { bai: BaiViet; href: string; featured?: boolean; locale?: Locale }) {
+  const category = getDictionary(locale).category;
   return (
     <article className="hard-shadow-hover group border border-ink bg-paper">
       <Link href={href} className="block p-5 sm:p-6">
         <div className="mb-3 flex flex-wrap items-center gap-2">
           <Badge variant={bai.category === "thong-bao" ? "accent" : "outline"}>
-            {category[bai.category as keyof typeof category] ?? bai.category}
+            {Object.hasOwn(category, bai.category) ? category[bai.category as keyof typeof category] : bai.category}
           </Badge>
           <span className="font-mono text-xs uppercase tracking-wider text-neutral-600">
-            {formatDate(bai.date)}
+            {formatDate(bai.date, locale)}
           </span>
         </div>
         <h3 className={`font-serif font-bold text-ink group-hover:underline group-focus-within:underline group-hover:decoration-accent group-focus-within:decoration-accent group-hover:decoration-2 group-focus-within:decoration-2 group-hover:underline-offset-4 group-focus-within:underline-offset-4 ${featured ? "text-2xl sm:text-3xl lg:text-4xl" : "text-xl sm:text-2xl"}`}>

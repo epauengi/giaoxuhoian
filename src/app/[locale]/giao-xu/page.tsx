@@ -1,3 +1,4 @@
+import type { Locale } from "@/lib/i18n/config";
 import { SectionHeader } from "@/components/ui/section-header";
 import { Ornament } from "@/components/ui/ornament";
 import { ButtonLink } from "@/components/ui/button";
@@ -6,29 +7,40 @@ import { GIAO_XU, CHA_XU, HOI_DONG_MUC_VU, GIAO_KHU } from "@/lib/data/giao-xu";
 import { localePath } from "@/lib/i18n/routing";
 import { getDictionary } from "@/lib/i18n/dictionaries";
 import { localizedPageMetadata } from "@/lib/seo";
+import { localize } from "@/lib/i18n/content";
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
-  const locale = "vi" as const;
+  const locale = (await params).locale as Locale;
+  const isEn = locale === "en";
   return localizedPageMetadata(
     locale,
-    "Giáo xứ",
-    "Tổng quan Giáo xứ Hội An: bổn mạng, địa chỉ, cha xứ, Hội đồng Mục vụ, giáo khu và văn phòng giáo xứ.",
+    isEn ? "Parish Overview" : "Giáo xứ",
+    isEn
+      ? "Overview of Hoi An Parish: patron saint, address, clergy, Pastoral Council, sub-parishes, and parish office."
+      : "Tổng quan Giáo xứ Hội An: bổn mạng, địa chỉ, cha xứ, Hội đồng Mục vụ, giáo khu và văn phòng giáo xứ.",
     "/giao-xu",
   );
 }
 
 export default async function GiaoXuPage({ params }: { params: Promise<{ locale: string }> }) {
-  const locale = "vi" as const;
+  const locale = (await params).locale as Locale;
+  const isEn = locale === "en";
   const p = getDictionary(locale).page.parish;
   const path = (href: string) => localePath(locale, href);
+  const parish = localize(locale, GIAO_XU);
+  const clergy = localize(locale, CHA_XU);
+  const council = localize(locale, HOI_DONG_MUC_VU);
+  const wards = localize(locale, GIAO_KHU);
+
   return (
     <>
+      {/* Overview & profile */}
       <section className="newsprint-texture border-b border-ink">
         <div className="mx-auto grid max-w-screen-xl grid-cols-1 lg:grid-cols-12">
           <div className="border-b border-ink p-6 sm:p-8 lg:col-span-7 lg:border-b-0 lg:border-r">
             <SectionHeader label={p.label} title={p.title} as="h1" />
             <p className="drop-cap font-body text-base leading-relaxed text-neutral-600">
-              {GIAO_XU.gioiThieu}
+              {parish.gioiThieu}
             </p>
             <ButtonLink href={path("/giao-xu/lich-su")} className="mt-6">
               {p.history}
@@ -40,34 +52,37 @@ export default async function GiaoXuPage({ params }: { params: Promise<{ locale:
             </h2>
             <dl className="space-y-3">
               {[
-                [p.patron, GIAO_XU.boNang],
-                [p.deanery, GIAO_XU.giaoHat],
-                [p.diocese, GIAO_XU.giaoPhan],
-                [p.address, GIAO_XU.diaChi],
-                ...(GIAO_XU.dienThoai ? [[p.phone, GIAO_XU.dienThoai]] : []),
-                ...(GIAO_XU.email ? [[p.email, GIAO_XU.email]] : []),
+                [p.patron, parish.boNang],
+                [p.deanery, parish.giaoHat],
+                [p.diocese, parish.giaoPhan],
+                [p.address, parish.diaChi],
+                ...(parish.dienThoai ? [[p.phone, parish.dienThoai]] : []),
+                ...(parish.email ? [[p.email, parish.email]] : []),
               ].map(([k, v]) => (
                 <div key={k} className="border-b border-muted pb-2">
-                  <dt className="font-mono text-xs uppercase tracking-widest text-neutral-500">{k}</dt>
+                  <dt className="font-mono text-xs tracking-widest text-neutral-500">{k}</dt>
                   <dd className="font-body text-sm">{v}</dd>
                 </div>
               ))}
             </dl>
-            <p className="mt-3 font-mono text-xs uppercase tracking-widest text-neutral-500">
-              Thông tin nhân sự, điện thoại, email, giờ văn phòng và giáo khu: đang chờ giáo xứ xác nhận.
+            <p className="mt-3 font-mono text-xs tracking-widest text-neutral-500">
+              {p.template}
             </p>
           </aside>
         </div>
       </section>
 
-      {/* Clergy */}
+      {/* Priests */}
       <section className="border-b border-ink">
         <div className="mx-auto max-w-screen-xl px-4 py-12 sm:py-16">
           <SectionHeader label={p.personnel} title={p.clergy} />
           <div className="grid grid-cols-1 border-l border-t border-ink sm:grid-cols-2">
-            {CHA_XU.map((cha) => (
+            {clergy.map((cha) => (
               <div key={cha.hoTen} className="flex gap-4 border-b border-r border-ink p-6">
-                <div aria-hidden className="flex h-24 w-20 shrink-0 items-center justify-center border border-ink bg-ink font-serif text-3xl font-black text-paper">
+                <div
+                  aria-hidden
+                  className="flex h-24 w-20 shrink-0 items-center justify-center border border-ink bg-ink font-serif text-3xl font-black text-paper"
+                >
                   {cha.hoTen.split(" ").at(-1)?.[0]}
                 </div>
                 <div>
@@ -99,8 +114,11 @@ export default async function GiaoXuPage({ params }: { params: Promise<{ locale:
                 </tr>
               </thead>
               <tbody>
-                {HOI_DONG_MUC_VU.map((tv) => (
-                  <tr key={tv.hoTen} className="border-b border-muted last:border-b-0 hover:bg-neutral-100">
+                {council.map((tv) => (
+                  <tr
+                    key={tv.hoTen}
+                    className="border-b border-muted last:border-b-0 hover:bg-neutral-100"
+                  >
                     <td className="px-4 py-3 font-body text-sm">{tv.hoTen}</td>
                     <td className="px-4 py-3 font-sans text-sm">{tv.vaiTro}</td>
                   </tr>
@@ -111,16 +129,16 @@ export default async function GiaoXuPage({ params }: { params: Promise<{ locale:
         </div>
       </section>
 
-      {/* Wards */}
+      {/* Sub-parishes / wards */}
       <section className="border-b border-ink">
         <div className="mx-auto max-w-screen-xl px-4 py-12 sm:py-16">
           <SectionHeader label={p.structure} title={p.wards} />
           <div className="grid grid-cols-1 border-l border-t border-ink sm:grid-cols-2 lg:grid-cols-4">
-            {GIAO_KHU.map((gk) => (
+            {wards.map((gk) => (
               <div key={gk.ten} className="border-b border-r border-ink p-6">
                 <p className="font-serif text-xl font-bold">{gk.ten}</p>
                 <p className="mt-2 font-body text-sm text-neutral-600">{gk.khuVuc}</p>
-                <p className="mt-2 font-mono text-xs uppercase tracking-widest text-neutral-500">
+                <p className="mt-2 font-mono text-xs tracking-widest text-neutral-500">
                   {p.patronOf}: {gk.boNang}
                 </p>
               </div>
@@ -134,20 +152,36 @@ export default async function GiaoXuPage({ params }: { params: Promise<{ locale:
         <div className="mx-auto grid max-w-screen-xl grid-cols-1 gap-8 px-4 py-12 sm:py-16 lg:grid-cols-12">
           <div className="lg:col-span-5">
             <SectionHeader label={p.office} title={p.officeHours} />
-            {GIAO_XU.gioVanPhong.length ? <dl className="space-y-3">
-              {GIAO_XU.gioVanPhong.map((g) => (
-                <div key={g.buoi} className="flex items-baseline justify-between border-b border-muted pb-2">
-                  <dt className="font-sans text-xs font-bold uppercase tracking-widest">{g.buoi}</dt>
-                  <dd className="font-mono text-sm">{g.thoiGian}</dd>
-                </div>
-              ))}
-            </dl> : <p className="font-body text-sm text-neutral-600">Giờ văn phòng đang chờ giáo xứ xác nhận.</p>}
+            {parish.gioVanPhong.length ? (
+              <dl className="space-y-3">
+                {parish.gioVanPhong.map((g) => (
+                  <div
+                    key={g.buoi}
+                    className="flex items-baseline justify-between border-b border-muted pb-2"
+                  >
+                    <dt className="font-sans text-xs font-bold uppercase tracking-widest">{g.buoi}</dt>
+                    <dd className="font-mono text-sm">{g.thoiGian}</dd>
+                  </div>
+                ))}
+              </dl>
+            ) : (
+              <p className="font-body text-sm text-neutral-600">
+                {isEn ? "Office hours pending parish confirmation." : "Giờ văn phòng đang chờ giáo xứ xác nhận."}
+              </p>
+            )}
             <p className="mt-4 font-body text-sm leading-relaxed text-neutral-600">
               {p.officeSupport}
             </p>
           </div>
           <div className="lg:col-span-7">
-            <EditorialPlate title={p.officeHours} label={p.office} marker="106" logo caption={p.caption} className="h-72" />
+            <EditorialPlate
+              title={p.officeHours}
+              label={p.office}
+              marker="106"
+              logo
+              caption={p.caption}
+              className="h-72"
+            />
           </div>
         </div>
       </section>

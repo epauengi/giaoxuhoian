@@ -3,24 +3,24 @@ import Link from "next/link";
 import { Nav } from "./nav";
 import { getDictionary } from "@/lib/i18n/dictionaries";
 import { formatDateLocale } from "@/lib/utils";
+import { LanguageSwitcher } from "@/components/layout/language-switcher";
+import type { Locale } from "@/lib/i18n/config";
 
-export function Masthead() {
-  const dict = getDictionary();
-  const today = formatDateLocale(new Date());
+export function Masthead({ locale: currentLocale = "vi" }: { locale?: Locale }) {
+  const dict = getDictionary(currentLocale);
+  const today = formatDateLocale(new Date(), currentLocale);
 
   return (
     <>
       <header>
         {/* Top date and diocese ticker bar - always visible on all viewports */}
         <div className="border-b border-ink bg-paper">
-          <div className="relative mx-auto flex max-w-screen-xl items-center justify-between px-4 py-1.5 font-mono text-[11px] uppercase tracking-widest text-neutral-600 sm:text-xs">
+          <div className="mx-auto flex max-w-screen-xl flex-wrap items-center justify-between gap-x-4 gap-y-1 px-4 py-1 font-mono text-[11px] uppercase tracking-widest text-neutral-600 sm:text-xs">
             <span>{today}</span>
-            <span className="font-semibold text-ink sm:absolute sm:inset-x-0 sm:text-center sm:font-normal sm:text-neutral-600">
+            <span className="font-semibold text-ink sm:font-normal sm:text-neutral-600">
               {dict.masthead.diocese}
             </span>
-            <span className="hidden sm:inline text-[10px] text-neutral-400">
-              {dict.masthead.official}
-            </span>
+            <LanguageSwitcher currentLocale={currentLocale} />
           </div>
         </div>
 
@@ -71,7 +71,7 @@ export function Masthead() {
           </div>
         </div>
       </header>
-      <Nav />
+      <Nav locale={currentLocale} />
     </>
   );
 }

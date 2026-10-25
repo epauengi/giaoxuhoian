@@ -1,3 +1,4 @@
+import type { Locale } from "@/lib/i18n/config";
 import { SectionHeader } from "@/components/ui/section-header";
 import { Ornament } from "@/components/ui/ornament";
 import { getDictionary } from "@/lib/i18n/dictionaries";
@@ -8,20 +9,38 @@ import {
   CANH_BAO_GIA_MAO,
 } from "@/lib/data/dong-gop";
 import { localizedPageMetadata } from "@/lib/seo";
+import { localize } from "@/lib/i18n/content";
+
+function formatCurrency(value: string, locale: Locale): string {
+  const num = Number(value.replace(/[^\d]/g, ""));
+  if (!isNaN(num) && num > 0) {
+    return new Intl.NumberFormat(locale === "en" ? "en-US" : "vi-VN", {
+      style: "currency",
+      currency: "VND",
+    }).format(num);
+  }
+  return value;
+}
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
-  const locale = "vi" as const;
+  const locale = (await params).locale as Locale;
   return localizedPageMetadata(
     locale,
-    "Đồng hành & Đóng góp",
-    "Các chương trình quyên góp, hình thức đóng góp và báo cáo thu–chi minh bạch của Giáo xứ Hội An.",
+    locale === "en" ? "Support & Offerings" : "Đồng hành & Đóng góp",
+    locale === "en"
+      ? "Fundraising campaigns, contribution methods, and transparent financial reports of Hoi An Parish."
+      : "Các chương trình quyên góp, hình thức đóng góp và báo cáo thu–chi minh bạch của Giáo xứ Hội An.",
     "/dong-hanh",
   );
 }
 
 export default async function DongHanhPage({ params }: { params: Promise<{ locale: string }> }) {
-  const locale = "vi" as const;
+  const locale = (await params).locale as Locale;
   const p = getDictionary(locale).page.support;
+  const chuongTrinh = localize(locale, CHUONG_TRINH_DONG_GOP);
+  const hinhThuc = localize(locale, HINH_THUC_DONG_GOP);
+  const baoCao = localize(locale, BAO_CAO_THU_CHI);
+
   return (
     <>
       <section className="newsprint-texture border-b border-ink">
@@ -34,7 +53,11 @@ export default async function DongHanhPage({ params }: { params: Promise<{ local
             <p className="font-sans text-xs font-bold uppercase tracking-widest text-accent">
               {p.warning}
             </p>
-            <p className="mt-1 font-body text-sm leading-relaxed">{CANH_BAO_GIA_MAO}</p>
+            <p className="mt-1 font-body text-sm leading-relaxed">
+              {locale === "en"
+                ? "The parish only uses official accounts published by the parish office. Please verify with the office before making large financial contributions."
+                : CANH_BAO_GIA_MAO}
+            </p>
           </div>
         </div>
       </section>
@@ -44,7 +67,7 @@ export default async function DongHanhPage({ params }: { params: Promise<{ local
         <div className="mx-auto max-w-screen-xl px-4 py-12">
           <h2 className="mb-6 font-serif text-3xl font-bold">{p.campaigns}</h2>
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-            {CHUONG_TRINH_DONG_GOP.map((cd) => (
+            {chuongTrinh.map((cd) => (
               <div key={cd.ten} className="border border-ink bg-paper p-6">
                 <h3 className="font-serif text-2xl font-bold">{cd.ten}</h3>
                 <p className="mt-2 font-body text-sm leading-relaxed text-neutral-600">{cd.moTa}</p>
@@ -53,16 +76,20 @@ export default async function DongHanhPage({ params }: { params: Promise<{ local
                     <dt className="font-mono text-xs uppercase tracking-widest text-neutral-500">
                       {p.reached}
                     </dt>
-                    <dd className="font-mono text-xl font-medium text-accent">{cd.daDat}</dd>
+                    <dd className="font-mono text-xl font-medium text-accent">
+                      {formatCurrency(cd.daDat, locale)}
+                    </dd>
                   </div>
                   <div>
                     <dt className="font-mono text-xs uppercase tracking-widest text-neutral-500">
                       {p.target}
                     </dt>
-                    <dd className="font-mono text-xl font-medium">{cd.mucTieu}</dd>
+                    <dd className="font-mono text-xl font-medium">
+                      {formatCurrency(cd.mucTieu, locale)}
+                    </dd>
                   </div>
                 </dl>
-                <p className="mt-3 font-mono text-xs uppercase tracking-widest text-neutral-500">
+                <p className="mt-3 font-mono text-xs tracking-widest text-neutral-500">
                   {p.deadline}: {cd.thoiHan}
                 </p>
               </div>
@@ -71,12 +98,12 @@ export default async function DongHanhPage({ params }: { params: Promise<{ local
         </div>
       </section>
 
-      {/* Methods — inverted */}
+      {/* Methods */}
       <section className="newsprint-texture border-b border-ink bg-ink text-paper">
         <div className="mx-auto max-w-screen-xl px-4 py-16">
           <SectionHeader label={p.methodsLabel} title={p.methods} invert />
           <div className="grid grid-cols-1 border-l border-t border-paper lg:grid-cols-3">
-            {HINH_THUC_DONG_GOP.map((h) => (
+            {hinhThuc.map((h) => (
               <div key={h.hinhThuc} className="border-b border-r border-paper p-6">
                 <h3 className="font-serif text-2xl font-bold">{h.hinhThuc}</h3>
                 <ul className="mt-3 space-y-2">
@@ -112,11 +139,11 @@ export default async function DongHanhPage({ params }: { params: Promise<{ local
                 </tr>
               </thead>
               <tbody>
-                {BAO_CAO_THU_CHI.map((bc) => (
+                {baoCao.map((bc) => (
                   <tr key={bc.ky} className="border-b border-muted last:border-b-0 hover:bg-neutral-100">
                     <td className="px-4 py-3 font-sans text-sm font-semibold">{bc.ky}</td>
-                    <td className="px-4 py-3 font-mono text-sm">{bc.thu}</td>
-                    <td className="px-4 py-3 font-mono text-sm">{bc.chi}</td>
+                    <td className="px-4 py-3 font-mono text-sm">{formatCurrency(bc.thu, locale)}</td>
+                    <td className="px-4 py-3 font-mono text-sm">{formatCurrency(bc.chi, locale)}</td>
                     <td className="px-4 py-3 font-body text-sm text-neutral-600">
                       {bc.noiDung}
                     </td>
@@ -125,7 +152,7 @@ export default async function DongHanhPage({ params }: { params: Promise<{ local
               </tbody>
             </table>
           </div>
-          <p className="mt-3 font-mono text-xs uppercase tracking-widest text-neutral-500">
+          <p className="mt-3 font-mono text-xs tracking-widest text-neutral-500">
             {p.reportTemplate}
           </p>
         </div>

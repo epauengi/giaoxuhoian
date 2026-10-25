@@ -1,3 +1,4 @@
+import type { Locale } from "@/lib/i18n/config";
 import Link from "next/link";
 import { SectionHeader } from "@/components/ui/section-header";
 import { Ornament } from "@/components/ui/ornament";
@@ -8,22 +9,25 @@ import { phungVuHomNay } from "@/lib/data/phung-vu";
 import { formatDateLocale } from "@/lib/utils";
 import { localePath } from "@/lib/i18n/routing";
 import { getDictionary } from "@/lib/i18n/dictionaries";
+import { localize } from "@/lib/i18n/content";
 import { localizedPageMetadata } from "@/lib/seo";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
-  const locale = "vi" as const;
+  const locale = (await params).locale as Locale;
   return localizedPageMetadata(
     locale,
-    "Lời Chúa & Suy niệm",
-    "Lời Chúa hằng ngày, suy niệm Chúa nhật và hằng ngày, kinh nguyện Công giáo của Giáo xứ Hội An.",
+    locale === "en" ? "Word of God & Reflections" : "Lời Chúa & Suy niệm",
+    locale === "en"
+      ? "Daily Word of God, Sunday and daily reflections, and Catholic prayers of Hoi An Parish."
+      : "Lời Chúa hằng ngày, suy niệm Chúa nhật và hằng ngày, kinh nguyện Công giáo của Giáo xứ Hội An.",
     "/loi-chua",
   );
 }
 
-function ReflectionList({ items, locale }: { items: BaiViet[]; locale: "vi" }) {
+function ReflectionList({ items, locale }: { items: BaiViet[]; locale: Locale }) {
   return (
     <div className="space-y-4">
       {items.map((bai) => (
@@ -62,10 +66,11 @@ const KINH_NGUYEN = [
 ];
 
 export default async function LoiChuaPage({ params }: { params: Promise<{ locale: string }> }) {
-  const locale = "vi" as const;
+  const locale = (await params).locale as Locale;
   const p = getDictionary(locale).page.word;
   const homNay = new Date();
-  const phungVu = phungVuHomNay(homNay);
+  const phungVu = localize(locale, phungVuHomNay(homNay));
+  const kinhNguyen = localize(locale, KINH_NGUYEN);
   const suyNiem = await getPublishedArticles(locale, "suy-niem");
   const cn = suyNiem.filter((s) => s.category === "suy-niem-chua-nhat");
   const hn = suyNiem.filter((s) => s.category === "suy-niem-hang-ngay");
@@ -122,7 +127,7 @@ export default async function LoiChuaPage({ params }: { params: Promise<{ locale
             {p.prayersDescription}
           </p>
           <div className="grid grid-cols-1 border-l border-t border-ink sm:grid-cols-2 lg:grid-cols-3">
-            {KINH_NGUYEN.map((k) => (
+            {kinhNguyen.map((k) => (
               <div key={k.ten} className="border-b border-r border-ink p-4">
                 <p className="font-serif text-lg font-bold">{k.ten}</p>
                 <p className="mt-1 font-mono text-xs uppercase tracking-widest text-neutral-500">

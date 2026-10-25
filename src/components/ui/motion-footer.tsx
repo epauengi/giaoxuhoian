@@ -20,6 +20,7 @@ type CinematicFooterProps = {
   emergency: FooterColumn;
   copyright: string;
   diocese: string;
+  locale?: "vi" | "en";
 };
 
 /** Editorial closing section for the parish public website. */
@@ -32,6 +33,7 @@ export function CinematicFooter({
   emergency,
   copyright,
   diocese,
+  locale = "vi",
 }: CinematicFooterProps) {
   const contactItems = [
     { href: "/lien-he", label: contact.address, icon: MapPin },
@@ -40,7 +42,7 @@ export function CinematicFooter({
   const sections = [...columns, emergency];
 
   return (
-    <footer aria-label={`Thông tin ${title}`} className="relative overflow-x-hidden border-t-4 border-ink bg-ink text-paper">
+    <footer aria-label={locale === "en" ? `${title} information` : `Thông tin ${title}`} className="relative overflow-x-hidden border-t-4 border-ink bg-ink text-paper">
       <div aria-hidden className="border-b border-neutral-700 px-4">
         <div className="mx-auto max-w-screen-xl">
           <div className="footer-ledger-rule h-1 w-full bg-accent" />
@@ -107,7 +109,7 @@ export function CinematicFooter({
           <p className="font-mono text-xs uppercase tracking-[0.16em] text-neutral-400">© {copyright}</p>
           <p className="font-mono text-xs uppercase tracking-[0.16em] text-neutral-400">{diocese}</p>
           <a href="#main-content" className="inline-flex min-h-11 items-center gap-2 self-start font-sans text-xs font-semibold uppercase tracking-widest text-paper underline-offset-4 hover:underline hover:decoration-accent hover:decoration-2 sm:self-auto">
-            Về nội dung chính <ArrowUp aria-hidden className="h-4 w-4" strokeWidth={1.5} />
+            {locale === "en" ? "Back to main content" : "Về nội dung chính"} <ArrowUp aria-hidden className="h-4 w-4" strokeWidth={1.5} />
           </a>
         </div>
       </div>
